@@ -10,6 +10,10 @@
  */
 package com.lizhaobolg;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 〈一句话功能简述〉<br>
  * 〈主入口〉
@@ -19,7 +23,10 @@ package com.lizhaobolg;
  * @since 1.0.0
  */
 public class Main {
+  private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
+
   public static void main(String[] args) {
-    System.out.println("HelloWorld");
+    logger.info("HelloWorld");
   }
 }
