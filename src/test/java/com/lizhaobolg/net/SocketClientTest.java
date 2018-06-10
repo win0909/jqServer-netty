@@ -67,6 +67,8 @@ public class SocketClientTest {
     ChannelFuture channelFuture = bootstrap.connect(IP, PORT).sync();
 
     String msg = "小王，我是客户端";
+    //这行很重要，StringDecoder以这个作为消息分割，
+    // 如果没有换行符的话，服务端就没办法接受到
     msg += "\r\n";
     channelFuture.channel().writeAndFlush(msg);
     logger.info("向Socket服务器发送数据:" + msg);
