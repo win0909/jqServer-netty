@@ -56,7 +56,7 @@ public class SocketClientTest {
          * 解码和编码 我将会在下一张为大家详细的讲解。再次暂时不做详细的描述
          *
          * */
-        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+//        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         pipeline.addLast("decoder", new StringDecoder());
         pipeline.addLast("encoder", new StringEncoder());
         pipeline.addLast(new SocketClientHandlerTest());
@@ -67,9 +67,9 @@ public class SocketClientTest {
     ChannelFuture channelFuture = bootstrap.connect(IP, PORT).sync();
 
     String msg = "小王，我是客户端";
-    //这行很重要，StringDecoder以这个作为消息分割，
+    //这行很重要，DelimiterBasedFrameDecoder 以这个作为消息分割，
     // 如果没有换行符的话，服务端就没办法接受到
-    msg += "\r\n";
+//    msg += "\r\n";
     channelFuture.channel().writeAndFlush(msg);
     logger.info("向Socket服务器发送数据:" + msg);
 

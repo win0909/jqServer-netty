@@ -42,9 +42,9 @@ public class SocketServerHandler extends SimpleChannelInboundHandler<String> {
     logger.info("数据内容：data=" + msg);
     String result = "小李，我是服务器，我收到你的信息了。";
 
-    //这行很重要，StringDecoder以这个作为消息分割，
-    // 如果没有换行符的话，服务端就没办法接受到
-    result += "\r\n";
+    //这行很重要，DelimiterBasedFrameDecoder以这个作为消息分割，
+    // 如果没有换行符的话，客户端就没办法接受到
+//    result += "\r\n";
     ctx.writeAndFlush(result);
 
   }
