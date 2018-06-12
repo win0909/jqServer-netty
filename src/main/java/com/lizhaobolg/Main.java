@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * 〈主入口〉
  *
  * @author zhao
- * @create 2018/6/9
+ * @date 2018/6/9
  * @since 1.0.0
  */
 public class Main {

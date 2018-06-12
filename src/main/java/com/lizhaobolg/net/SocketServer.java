@@ -20,8 +20,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -30,7 +28,7 @@ import io.netty.handler.codec.string.StringEncoder;
  * 〈netty服务器〉
  *
  * @author zhao
- * @create 2018/6/10
+ * @date 2018/6/10
  * @since 1.0.0
  */
 public class SocketServer {
