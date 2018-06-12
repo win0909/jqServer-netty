@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lizhaobolg.net;
+package com.lizhaobolg.demopro.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -32,6 +30,7 @@ import io.netty.handler.codec.string.StringEncoder;
  *
  * @author zhao
  * @date 2018/6/10
+ * @see SocketServer
  * @since 1.0.0
  */
 public class SocketClientTest {
@@ -56,7 +55,7 @@ public class SocketClientTest {
          * 解码和编码 我将会在下一张为大家详细的讲解。再次暂时不做详细的描述
          *
          * */
-//        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+        //        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         pipeline.addLast("decoder", new StringDecoder());
         pipeline.addLast("encoder", new StringEncoder());
         pipeline.addLast(new SocketClientHandlerTest());
@@ -69,7 +68,7 @@ public class SocketClientTest {
     String msg = "小王，我是客户端";
     //这行很重要，DelimiterBasedFrameDecoder 以这个作为消息分割，
     // 如果没有换行符的话，服务端就没办法接受到
-//    msg += "\r\n";
+    //    msg += "\r\n";
     channelFuture.channel().writeAndFlush(msg);
     logger.info("向Socket服务器发送数据:" + msg);
 

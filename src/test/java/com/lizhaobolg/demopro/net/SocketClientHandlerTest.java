@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lizhaobolg.net;
+package com.lizhaobolg.demopro.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  *
  * @author zhao
  * @date 2018/6/10
+ * @see SocketServer
  * @since 1.0.0
  */
 public class SocketClientHandlerTest extends SimpleChannelInboundHandler<String> {
