@@ -11,6 +11,7 @@
 package com.lizhaobolg.base.factory;
 
 import com.lizhaobolg.base.constant.ConstantValue;
+import com.lizhaobolg.base.exception.ServerErrException;
 import com.lizhaobolg.server.pojo.ServerConfig;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -32,7 +33,7 @@ public class ServerBootstrapFactory {
   private ServerBootstrapFactory() {
   }
 
-  public static ServerBootstrap createServerBootstrap() throws UnsupportedOperationException {
+  public static ServerBootstrap createServerBootstrap() throws ServerErrException {
 
     ServerBootstrap serverBootstrap = new ServerBootstrap();
     switch (ServerConfig.getInstance().getChannelType()) {
@@ -49,7 +50,7 @@ public class ServerBootstrapFactory {
 
         return serverBootstrap;
       default:
-        throw new UnsupportedOperationException(
+        throw new ServerErrException(
                 "Failed to create ServerBootstrap,  " +ServerConfig.getInstance().getChannelType() + " not supported!");
     }
   }
