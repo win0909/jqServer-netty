@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lizhaobolg.net;
+package com.lizhaobolg.demopro.net;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +48,7 @@ public class SocketServer {
   private static EventLoopGroup bossGroup = new NioEventLoopGroup(BIS_GROUP_SIZE);
   private static EventLoopGroup workerGroup = new NioEventLoopGroup(WORK_GROUP_SIZE);
 
-  public  void run() throws Exception {
+  public void run() throws Exception {
     ServerBootstrap bootstrap = new ServerBootstrap();
     bootstrap.group(bossGroup, workerGroup);
     bootstrap.channel(NioServerSocketChannel.class);
@@ -56,8 +56,7 @@ public class SocketServer {
       @Override
       protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        // 以("\n")为结尾分割的 解码器
-//        pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+        //以("\n")为结尾分割的 解码器 pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
         pipeline.addLast("decoder", new StringDecoder());
         pipeline.addLast("encoder", new StringEncoder());
         pipeline.addLast(new SocketServerHandler());

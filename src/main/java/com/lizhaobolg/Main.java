@@ -10,10 +10,13 @@
  */
 package com.lizhaobolg;
 
-import com.lizhaobolg.net.SocketServer;
+import com.lizhaobolg.base.factory.ServerChannelFactory;
+import com.lizhaobolg.demopro.net.SocketServer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.netty.channel.Channel;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -28,7 +31,12 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
     logger.info("开始启动Socket服务器...");
-    new SocketServer().run();
+
+    //基本的netty启动
+    //    new SocketServer().run()
+
+    Channel acceptorChannel = ServerChannelFactory.createAcceptorChannel();
+    acceptorChannel.closeFuture().sync();
 
   }
 }

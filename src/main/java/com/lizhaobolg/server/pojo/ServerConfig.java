@@ -10,6 +10,9 @@
  */
 package com.lizhaobolg.server.pojo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.channel.EventLoopGroup;
 
 /**
@@ -21,6 +24,8 @@ import io.netty.channel.EventLoopGroup;
  * @since 1.0.0
  */
 public class ServerConfig {
+  private static final Logger logger = LoggerFactory.getLogger(ServerConfig.class);
+
   private Integer port;
   private String channelType;
   private String protocolType;
@@ -30,18 +35,27 @@ public class ServerConfig {
   private ServerConfig() {
   }
 
+  public static ServerConfig getInstance() {
+    if (instance == null) {
+      instance = new ServerConfig();
+      instance.init();
+      instance.printServerInfo();
+    }
+    return instance;
+  }
+
   private void init() {
     port = 8088;
     channelType = "NIO";
     protocolType = "TCP";
   }
 
-  public static ServerConfig getInstance() {
-    if (instance == null) {
-      instance = new ServerConfig();
-      instance.init();
-    }
-    return instance;
+  public void printServerInfo() {
+    logger.info("**************Server INFO******************");
+    logger.info("protocolType  : " + protocolType);
+    logger.info("port          : " + port);
+    logger.info("channelType   : " + channelType);
+    logger.info("**************Server INFO******************");
   }
 
   public Integer getPort() {

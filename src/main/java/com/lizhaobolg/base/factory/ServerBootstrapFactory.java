@@ -40,8 +40,6 @@ public class ServerBootstrapFactory {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         serverBootstrap.group(bossGroup, workerGroup);
-//        ServerConfig.setBossGroup(bossGroup);
-//        ServerConfig.setWorkerGroup(workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
 
         return serverBootstrap;
