@@ -17,39 +17,26 @@
 
   <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
   <context:component-scan base-package="com.lizhaoblog">
-    <!--<context:exclude-filter type="annotation"-->
-    <!--expression="org.springframework.stereotype.Controller"/>-->
   </context:component-scan>
 
-  <tx:annotation-driven/>
+  <!--&lt;!&ndash;事务&ndash;&gt;-->
+  <!--<tx:annotation-driven/>-->
+  <!--&lt;!&ndash;定时任务&ndash;&gt;-->
+  <!--<task:annotation-driven/>-->
 
-
+  <!--指向的配置文件-->
   <bean id="cfgProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     <property name="locations">
       <list>
-        <!--<value>classpath:dbconfig-dev.properties</value>-->
-        <!--<value>classpath:spring/redis/redis.properties</value>-->
-        <!--<value>classpath:qdp-${spring.profiles.active}.properties</value>-->
         <value>classpath:properties/server-config-dev.properties</value>
       </list>
     </property>
   </bean>
-
   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="properties" ref="cfgProps">
     </property>
   </bean>
 
-  <task:annotation-driven/>
-
-  <!--<bean id="systemInfo" class="com.lizhaoblog.server.pojo.ServerConfig">-->
-    <!--&lt;!&ndash; 调用的类 &ndash;&gt;-->
-    <!--<property name="channelType" value="NIO"/>-->
-    <!--<property name="protocolType" value="TCP"/>-->
-    <!--&lt;!&ndash;<property name="protocolType" value="WEBSOCKET"/>&ndash;&gt;-->
-    <!--&lt;!&ndash;<property name="port" value="8088"/>&ndash;&gt;-->
-    <!--<property name="port" value="9088"/>-->
-  <!--</bean>-->
 
   <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetClass"
