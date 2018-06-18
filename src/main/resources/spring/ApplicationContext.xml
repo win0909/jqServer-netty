@@ -16,7 +16,7 @@
   <context:annotation-config/>
 
   <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
-  <context:component-scan base-package="com.lizhaobolg">
+  <context:component-scan base-package="com.lizhaoblog">
     <!--<context:exclude-filter type="annotation"-->
     <!--expression="org.springframework.stereotype.Controller"/>-->
   </context:component-scan>
@@ -42,7 +42,7 @@
 
   <task:annotation-driven/>
 
-  <!--<bean id="systemInfo" class="com.lizhaobolg.server.pojo.ServerConfig">-->
+  <!--<bean id="systemInfo" class="com.lizhaoblog.server.pojo.ServerConfig">-->
     <!--&lt;!&ndash; 调用的类 &ndash;&gt;-->
     <!--<property name="channelType" value="NIO"/>-->
     <!--<property name="protocolType" value="TCP"/>-->
