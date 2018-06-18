@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+						http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+
+  <!-- 启用注解 -->
+  <context:annotation-config/>
+
+  <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
+  <context:component-scan base-package="com.lizhaobolg">
+    <!--<context:exclude-filter type="annotation"-->
+    <!--expression="org.springframework.stereotype.Controller"/>-->
+  </context:component-scan>
+
+  <tx:annotation-driven/>
+
+
+  <bean id="cfgProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    <property name="locations">
+      <list>
+        <!--<value>classpath:dbconfig-dev.properties</value>-->
+        <!--<value>classpath:spring/redis/redis.properties</value>-->
+        <!--<value>classpath:qdp-${spring.profiles.active}.properties</value>-->
+        <value>classpath:properties/server-config-dev.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="properties" ref="cfgProps">
+    </property>
+  </bean>
+
+  <task:annotation-driven/>
+
+  <!--<bean id="systemInfo" class="com.lizhaobolg.server.pojo.ServerConfig">-->
+    <!--&lt;!&ndash; 调用的类 &ndash;&gt;-->
+    <!--<property name="channelType" value="NIO"/>-->
+    <!--<property name="protocolType" value="TCP"/>-->
+    <!--&lt;!&ndash;<property name="protocolType" value="WEBSOCKET"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="port" value="8088"/>&ndash;&gt;-->
+    <!--<property name="port" value="9088"/>-->
+  <!--</bean>-->
+
+  <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass"
+              value="org.springframework.util.Log4jConfigurer"/>
+    <property name="targetMethod" value="initLogging"/>
+    <property name="arguments">
+      <list>
+        <value>classpath:log4j-dev.xml</value>
+      </list>
+    </property>
+  </bean>
+</beans>

@@ -12,6 +12,12 @@ package com.lizhaobolg.server.pojo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 import io.netty.channel.EventLoopGroup;
 
@@ -23,12 +29,19 @@ import io.netty.channel.EventLoopGroup;
  * @date 2018/6/12 11:16
  * @since 1.0.0
  */
+@Component
+@Scope("singleton")
 public class ServerConfig {
   private static final Logger logger = LoggerFactory.getLogger(ServerConfig.class);
 
+  @Value("#{cfgProps['port']}")
   private Integer port;
+  @Value("#{cfgProps['channelType']}")
   private String channelType;
+  @Value("#{cfgProps['protocolType']}")
   private String protocolType;
+
+  private ApplicationContext applicationContext;
 
   private static ServerConfig instance = null;
 
@@ -38,16 +51,15 @@ public class ServerConfig {
   public static ServerConfig getInstance() {
     if (instance == null) {
       instance = new ServerConfig();
-      instance.init();
-      instance.printServerInfo();
+      logger.debug("ServerConfig is not init by spring");
     }
     return instance;
   }
 
-  private void init() {
-    port = 8088;
-    channelType = "NIO";
-    protocolType = "TCP";
+  @PostConstruct
+  public void init() {
+    instance = this;
+    printServerInfo();
   }
 
   public void printServerInfo() {
@@ -80,5 +92,13 @@ public class ServerConfig {
 
   public void setProtocolType(String protocolType) {
     this.protocolType = protocolType;
+  }
+
+  public ApplicationContext getApplicationContext() {
+    return applicationContext;
+  }
+
+  public void setApplicationContext(ApplicationContext applicationContext) {
+    this.applicationContext = applicationContext;
   }
 }
