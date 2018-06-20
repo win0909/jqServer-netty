@@ -11,6 +11,7 @@
 package com.lizhaoblog;
 
 import com.lizhaoblog.base.factory.ServerChannelFactory;
+import com.lizhaoblog.base.network.IServer;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.slf4j.Logger;
@@ -45,8 +46,12 @@ public class Main {
 
     //基本的netty启动
     //    new SocketServer().run()
-    Channel acceptorChannel = ServerChannelFactory.createAcceptorChannel();
-    acceptorChannel.closeFuture().sync();
+    //还没使用IServer的时候启用
+//    Channel acceptorChannel = ServerChannelFactory.createAcceptorChannel()
+//    acceptorChannel.closeFuture().sync()
 
+    //
+    IServer server = (IServer)ServerConfig.getInstance().getApplicationContext().getBean("basicServerImpl");
+    server.start();
   }
 }

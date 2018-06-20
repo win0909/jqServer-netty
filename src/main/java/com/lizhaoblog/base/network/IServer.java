@@ -1,0 +1,39 @@
+/**
+ * Copyright (C), 2015-2018
+ * FileName: IServer
+ * Author:   zhao
+ * Date:     2018/6/20 20:20
+ * Description: Server服务核心
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
+package com.lizhaoblog.base.network;
+
+/**
+ * 〈一句话功能简述〉<br> 
+ * 〈Server服务核心〉
+ *
+ * @author zhao
+ * @date 2018/6/20 20:20
+ * @since 1.0.0
+ */
+public interface IServer {
+  /**
+   * 服务启动
+   * @throws Exception
+   */
+  void start() throws Exception;
+
+  /**
+   * 服务关闭
+   * @throws Exception
+   */
+  void stop() throws Exception;
+
+  /**
+   * 服务重启
+   * @throws Exception
+   */
+  void restart() throws Exception;
+}

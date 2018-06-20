@@ -10,6 +10,9 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -24,6 +27,7 @@ import io.netty.handler.codec.string.StringEncoder;
  * @date 2018/6/12 15:00
  * @since 1.0.0
  */
+@Component
 public class TcpServerStringInitializer extends ChannelInitializer<SocketChannel> {
 
   @Override

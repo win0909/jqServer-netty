@@ -64,7 +64,8 @@ public class ServerChannelFactory {
     if (ConstantValue.PROTOCOL_TYPE_HTTP.equals(protocolType) || ConstantValue.PROTOCOL_TYPE_HTTPS
             .equals(protocolType)) {
     } else if (ConstantValue.PROTOCOL_TYPE_TCP.equals(protocolType)) {
-      return new TcpServerStringInitializer();
+//      return new TcpServerStringInitializer();
+      return (ChannelInitializer<SocketChannel>) ServerConfig.getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
     } else if (ConstantValue.PROTOCOL_TYPE_WEBSOCKET.equals(protocolType)) {
     } else if (ConstantValue.PROTOCOL_TYPE_CUSTOM.equals(protocolType)) {
     } else {
