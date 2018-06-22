@@ -14,6 +14,9 @@ import com.lizhaoblog.base.network.listener.INetworkEventListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -26,19 +29,20 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @date 2018/6/12 15:01
  * @since 1.0.0
  */
+@Component
+@Scope("prototype")
 public class TcpMessageStringHandler extends SimpleChannelInboundHandler<String> {
   private static final Logger logger = LoggerFactory.getLogger(TcpMessageStringHandler.class);
 
+  @Autowired
   private INetworkEventListener listener;
-
-  public TcpMessageStringHandler(INetworkEventListener listener) {
-    this.listener = listener;
-  }
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, String msg) {
     logger.info("数据内容：data=" + msg);
     String result = "小李，我是服务器，我收到你的信息了。";
+    logger.info("this is " + this);
+    logger.info("listener is " + listener);
     ctx.writeAndFlush(result);
   }
 
