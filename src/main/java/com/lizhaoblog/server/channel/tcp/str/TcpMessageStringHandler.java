@@ -10,6 +10,8 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
+import com.lizhaoblog.base.network.listener.INetworkEventListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +19,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
- * 〈一句话功能简述〉<br> 
+ * 〈一句话功能简述〉<br>
  * 〈tcp消息处理〉
  *
  * @author zhao
@@ -27,14 +29,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class TcpMessageStringHandler extends SimpleChannelInboundHandler<String> {
   private static final Logger logger = LoggerFactory.getLogger(TcpMessageStringHandler.class);
 
-  @Override
-  public void exceptionCaught(ChannelHandlerContext ctx, Throwable throwable) {
-    logger.debug("异常发生", throwable);
-  }
+  private INetworkEventListener listener;
 
-  @Override
-  public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    super.channelRead(ctx, msg);
+  public TcpMessageStringHandler(INetworkEventListener listener) {
+    this.listener = listener;
   }
 
   @Override
@@ -45,14 +43,17 @@ public class TcpMessageStringHandler extends SimpleChannelInboundHandler<String>
   }
 
   @Override
-  public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    logger.info("建立连接");
-    super.channelActive(ctx);
+  public void channelActive(ChannelHandlerContext ctx) {
+    listener.onConnected(ctx);
   }
 
   @Override
-  public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-    logger.info("连接断开");
-    super.channelInactive(ctx);
+  public void channelInactive(ChannelHandlerContext ctx) {
+    listener.onDisconnected(ctx);
+  }
+
+  @Override
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable throwable) {
+    listener.onExceptionCaught(ctx, throwable);
   }
 }

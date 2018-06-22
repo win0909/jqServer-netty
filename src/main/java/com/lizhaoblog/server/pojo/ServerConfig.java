@@ -57,7 +57,6 @@ public class ServerConfig {
   @PostConstruct
   public void init() {
     instance = this;
-    printServerInfo();
   }
 
   public void printServerInfo() {

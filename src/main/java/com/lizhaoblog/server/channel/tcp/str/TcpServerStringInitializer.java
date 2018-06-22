@@ -10,6 +10,9 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
+import com.lizhaoblog.base.network.listener.INetworkEventListener;
+import com.lizhaoblog.server.pojo.ServerConfig;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +38,8 @@ public class TcpServerStringInitializer extends ChannelInitializer<SocketChannel
     ChannelPipeline pipeline = ch.pipeline();
     pipeline.addLast("decoder", new StringDecoder());
     pipeline.addLast("encoder", new StringEncoder());
-    pipeline.addLast(new TcpMessageStringHandler());
+    INetworkEventListener networkListener = (INetworkEventListener) ServerConfig.getInstance().getApplicationContext().getBean("networkListener");
+    pipeline.addLast(new TcpMessageStringHandler(networkListener));
   }
 
 }

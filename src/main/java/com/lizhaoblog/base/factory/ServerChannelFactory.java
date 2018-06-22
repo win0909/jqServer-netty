@@ -45,6 +45,7 @@ public class ServerChannelFactory {
       ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
       channelFuture.awaitUninterruptibly();
       if (channelFuture.isSuccess()) {
+        ServerConfig.getInstance().printServerInfo();
         return channelFuture.channel();
       } else {
         String errMsg = "Failed to open socket! Cannot bind to port: " + port + "!";
