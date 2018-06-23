@@ -31,14 +31,16 @@ public interface INetworkEventListener {
 
   /**
    * 连接断开
-   * * @param ctx ChannelHandlerContext
+   *
+   * @param ctx ChannelHandlerContext
    */
   void onDisconnected(ChannelHandlerContext ctx);
 
   /**
    * 异常发生
-   * * @param ctx ChannelHandlerContext
-   * * @param throwable 异常
+   *
+   * @param ctx       ChannelHandlerContext
+   * @param throwable 异常
    */
   void onExceptionCaught(ChannelHandlerContext ctx, Throwable throwable);
 

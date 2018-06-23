@@ -11,6 +11,7 @@
 package com.lizhaoblog.server.core.listener;
 
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
+import com.lizhaoblog.base.session.SessionManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +37,13 @@ public class NetworkListener implements INetworkEventListener {
   @Override
   public void onConnected(ChannelHandlerContext ctx) {
     logger.info("建立连接");
+    SessionManager.getInstance().create(ctx.channel());
   }
 
   @Override
   public void onDisconnected(ChannelHandlerContext ctx) {
     logger.info("连接断开");
-
+    SessionManager.getInstance().close(ctx.channel());
   }
 
   @Override

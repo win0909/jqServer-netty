@@ -11,6 +11,7 @@
 package com.lizhaoblog.server.channel.tcp.str;
 
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
+import com.lizhaoblog.base.session.SessionManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +40,9 @@ public class TcpMessageStringHandler extends SimpleChannelInboundHandler<String>
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, String msg) {
-    logger.info("数据内容：data=" + msg);
+    logger.info("服务器收到的数据内容：data=" + msg);
     String result = "小李，我是服务器，我收到你的信息了。";
-    logger.info("this is " + this);
-    logger.info("listener is " + listener);
-    ctx.writeAndFlush(result);
+    SessionManager.getInstance().sendMessage(ctx.channel(), result);
   }
 
   @Override

@@ -21,19 +21,19 @@ package com.lizhaoblog.base.network;
 public interface IServer {
   /**
    * 服务启动
-   * @throws Exception
+   * @throws Exception 启动时异常
    */
   void start() throws Exception;
 
   /**
    * 服务关闭
-   * @throws Exception
+   * @throws Exception 关闭异常
    */
   void stop() throws Exception;
 
   /**
    * 服务重启
-   * @throws Exception
+   * @throws Exception 重启时异常
    */
   void restart() throws Exception;
 }
