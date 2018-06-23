@@ -10,6 +10,7 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
+import com.lizhaoblog.base.network.customer.INetworkConsumer;
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
 import com.lizhaoblog.base.session.SessionManager;
 
@@ -33,16 +34,15 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @Component
 @Scope("prototype")
 public class TcpMessageStringHandler extends SimpleChannelInboundHandler<String> {
-  private static final Logger logger = LoggerFactory.getLogger(TcpMessageStringHandler.class);
 
   @Autowired
   private INetworkEventListener listener;
+  @Autowired
+  private INetworkConsumer consumer;
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, String msg) {
-    logger.info("服务器收到的数据内容：data=" + msg);
-    String result = "小李，我是服务器，我收到你的信息了。";
-    SessionManager.getInstance().sendMessage(ctx.channel(), result);
+    consumer.consume(msg, ctx.channel());
   }
 
   @Override
