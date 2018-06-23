@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C), 2015-2018
  * FileName: TcpServerStringInitializer
  * Author:   zhao
@@ -10,10 +10,8 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
-import com.lizhaoblog.base.network.listener.INetworkEventListener;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import io.netty.channel.ChannelInitializer;

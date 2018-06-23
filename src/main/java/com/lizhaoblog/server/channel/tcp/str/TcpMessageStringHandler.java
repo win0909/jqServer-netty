@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C), 2015-2018
  * FileName: TcpMessageStringHandler
  * Author:   zhao
@@ -12,10 +12,7 @@ package com.lizhaoblog.server.channel.tcp.str;
 
 import com.lizhaoblog.base.network.customer.INetworkConsumer;
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
-import com.lizhaoblog.base.session.SessionManager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
