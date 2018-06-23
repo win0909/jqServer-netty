@@ -15,7 +15,7 @@ import com.lizhaoblog.base.session.SessionManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import io.netty.channel.Channel;
 
@@ -27,7 +27,7 @@ import io.netty.channel.Channel;
  * @date 2018/6/23 21:09
  * @since 1.0.0
  */
-@Service
+@Component
 public class NetworkConsumer implements INetworkConsumer {
   private static final Logger logger = LoggerFactory.getLogger(NetworkConsumer.class);
 
