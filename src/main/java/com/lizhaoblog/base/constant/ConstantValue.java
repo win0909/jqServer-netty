@@ -28,6 +28,16 @@ public class ConstantValue {
   public static final String PROTOCOL_TYPE_CUSTOM = "CUSTOM";
   public static final String PROTOCOL_TYPE_WEBSOCKET = "WEBSOCKET";
 
+  /**
+   * 登录和下线队列
+   */
+  public static final int QUEUE_LOGIN_LOGOUT = 1;
+
+  /**
+   * 业务队列
+   */
+  public static final int QUEUE_LOGIC = 2;
+
   private ConstantValue() {
   }
 
