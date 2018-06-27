@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @date 2018/6/25 16:24
  * @since 1.0.0
  */
-@Component("TestFirstHandler")
+@Component
 public class TestFirstHandler extends AbstractHandler<String, Session> {
 
   private static final Logger logger = LoggerFactory.getLogger(TestFirstHandler.class);

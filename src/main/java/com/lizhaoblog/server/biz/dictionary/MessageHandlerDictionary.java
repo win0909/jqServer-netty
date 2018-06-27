@@ -12,6 +12,7 @@ package com.lizhaoblog.server.biz.dictionary;
 
 import com.lizhaoblog.base.concurrent.commond.IHandler;
 import com.lizhaoblog.base.concurrent.dictionary.IMessageDictionary;
+import com.lizhaoblog.base.util.StringUtil;
 import com.lizhaoblog.server.biz.constant.CommonValue;
 import com.lizhaoblog.server.biz.handler.TestFirstHandler;
 import com.lizhaoblog.server.pojo.ServerConfig;
@@ -52,7 +53,8 @@ public class MessageHandlerDictionary implements IMessageDictionary {
     Class<? extends IHandler> clazz = idHandleMap.get(messageId);
     if (clazz != null) {
       try {
-        return (IHandler) ServerConfig.getInstance().getApplicationContext().getBean(clazz.getSimpleName());
+        String clazzName = StringUtil.toLowerCaseFirstOne(clazz.getSimpleName());
+        return (IHandler) ServerConfig.getInstance().getApplicationContext().getBean(clazzName);
       } catch (Exception e) {
         return null;
       }
