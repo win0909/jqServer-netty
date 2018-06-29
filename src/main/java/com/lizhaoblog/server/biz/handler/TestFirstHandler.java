@@ -13,10 +13,15 @@ package com.lizhaoblog.server.biz.handler;
 import com.lizhaoblog.base.concurrent.handler.AbstractHandler;
 import com.lizhaoblog.base.session.Session;
 import com.lizhaoblog.base.session.SessionManager;
+import com.lizhaoblog.server.biz.dao.mysql.UserDao;
+import com.lizhaoblog.server.biz.entity.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -31,11 +36,15 @@ public class TestFirstHandler extends AbstractHandler<String, Session> {
 
   private static final Logger logger = LoggerFactory.getLogger(TestFirstHandler.class);
 
+  @Autowired
+  private UserDao userDao;
+
   @Override
   public void doAction() {
-    //    logger.info("TestFirstHandler doAction " + this);
     logger.info("服务器收到的数据内容：data=" + message);
     String result = "小李，我是服务器，我收到你的信息了。";
     SessionManager.getInstance().sendMessage(param, result);
+    List<User> myAll = userDao.listUser();
+
   }
 }

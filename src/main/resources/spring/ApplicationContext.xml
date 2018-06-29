@@ -29,6 +29,7 @@
     <property name="locations">
       <list>
         <value>classpath:properties/server-config-dev.properties</value>
+        <value>classpath:properties/db-config-dev.properties</value>
       </list>
     </property>
   </bean>
@@ -36,7 +37,6 @@
     <property name="properties" ref="cfgProps">
     </property>
   </bean>
-
 
   <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetClass"
@@ -48,4 +48,7 @@
       </list>
     </property>
   </bean>
+
+  <import resource="ApplicationContext-mysql.xml"/>
+
 </beans>
