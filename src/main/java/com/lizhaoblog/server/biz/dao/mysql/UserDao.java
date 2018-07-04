@@ -10,10 +10,12 @@
  */
 package com.lizhaoblog.server.biz.dao.mysql;
 
+import com.lizhaoblog.base.mybatis.CrudMapper;
 import com.lizhaoblog.server.biz.entity.User;
 
 import org.apache.ibatis.annotations.CacheNamespaceRef;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -28,7 +30,8 @@ import java.util.List;
  * @since 1.0.0
  */
 @CacheNamespaceRef(UserDao.class)
-public interface UserDao {
+public interface UserDao extends CrudMapper<User, Integer> {
+
   @Select("SELECT * FROM user")
   @ResultMap("resultMap")
   @Options(useCache = false)

@@ -10,6 +10,8 @@
  */
 package com.lizhaoblog.server.biz.entity;
 
+import com.lizhaoblog.base.mybatis.Entity;
+
 import org.apache.ibatis.type.Alias;
 
 import javax.persistence.Column;
@@ -26,7 +28,7 @@ import javax.persistence.Table;
  */
 @Table(name = "user")
 @Alias("User")
-public class User {
+public class User implements Entity {
   @Id
   @Column(name = "id")
   private Integer id;
@@ -67,5 +69,11 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" + "id=" + id + ", name='" + name + '\'' + ", account='" + account + '\'' + ", password='" + password
+            + '\'' + '}';
   }
 }

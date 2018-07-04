@@ -45,6 +45,17 @@ public class TestFirstHandler extends AbstractHandler<String, Session> {
     String result = "小李，我是服务器，我收到你的信息了。";
     SessionManager.getInstance().sendMessage(param, result);
     List<User> myAll = userDao.listUser();
+    List<User> all = userDao.listAll();
 
+    logger.info(all.toString());
+
+    User user = new User();
+    user.setName("a");
+    user.setAccount("aa");
+    user.setPassword("aaa");
+    userDao.insert(user);
+
+    all = userDao.listAll();
+    logger.info(all.toString());
   }
 }
