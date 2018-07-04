@@ -35,23 +35,22 @@ public class Main {
   static {
     // 先加载spring
     logger.info("准备载入spring...");
-    ApplicationContext applicationContext = new FileSystemXmlApplicationContext("classpath:spring/ApplicationContext.xml");
+    ApplicationContext applicationContext = new FileSystemXmlApplicationContext(
+            "classpath:spring/ApplicationContext.xml");
     ServerConfig.getInstance().setApplicationContext(applicationContext);
     logger.info("载入spring 完毕...");
-
   }
 
   public static void main(String[] args) throws Exception {
     logger.info("开始启动Socket服务器...");
 
-    //基本的netty启动
+    // 基本的netty启动
     //    new SocketServer().run()
-    //还没使用IServer的时候启用
-//    Channel acceptorChannel = ServerChannelFactory.createAcceptorChannel()
-//    acceptorChannel.closeFuture().sync()
+    // 还没使用IServer的时候启用
+    //    Channel acceptorChannel = ServerChannelFactory.createAcceptorChannel()
+    //    acceptorChannel.closeFuture().sync()
 
-    //
-    IServer server = (IServer)ServerConfig.getInstance().getApplicationContext().getBean("basicServerImpl");
+    IServer server = (IServer) ServerConfig.getInstance().getApplicationContext().getBean("basicServerImpl");
     server.start();
   }
 }
