@@ -271,10 +271,10 @@ public class CrudSqlProvider {
     }
   }
 
-  private String getTableNameFromClass(Class<?> clasz) {
-    String simpleName = clasz.getSimpleName();
+  private String getTableNameFromClass(Class<?> clazz) {
+    String simpleName = clazz.getSimpleName();
     String first = simpleName.substring(0, 1);
-    String remains = clasz.getSimpleName().substring(1);
+    String remains = clazz.getSimpleName().substring(1);
     return first + remains;
   }
 
