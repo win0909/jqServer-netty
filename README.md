@@ -1,23 +1,103 @@
 # JgServer
 
 #### 项目介绍
-JgServer
+JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框架开发的服务端容器，支持Tcp，Socket，WebSocket(SSL)，HTTP(S)。
+支持对各种通讯协议进行定制，可以用于开发游戏后端(意为JavaGameServer，最初用于开发Java游戏服务器的一套完整架构)。
+项目代码简洁，注释丰富，上手容易，扩展方便。
+项目使用框架：Spring，Netty，Mybatis，Redis，junit，log4j等。
+已包含一些常规的工具：消息处理(包括json字符串、二进制byte消息)、事件机制、心跳检测、日志管理、定时任务、持久层框架、数据库连接池等。
 
-#### 软件架构
-软件架构说明
+#### 源码框架
+    D:.
+    ├─.idea
+    │  └─inspectionProfiles
+    ├─etc														脚本文件
+    │  └─sql														
+    ├─logs														日志
+    ├─src
+    │  ├─main
+    │  │  ├─java
+    │  │  │  ├─com
+    │  │  │  │  └─lizhaoblog
+    │  │  │  │      ├─base										基本的库
+    │  │  │  │      │  ├─concurrent								并发包
+    │  │  │  │      │  │  ├─commond
+    │  │  │  │      │  │  ├─dictionary
+    │  │  │  │      │  │  └─handler
+    │  │  │  │      │  ├─constant								常量
+    │  │  │  │      │  ├─exception								异常	
+    │  │  │  │      │  ├─factory								工厂
+    │  │  │  │      │  ├─mybatis								数据库工具
+    │  │  │  │      │  ├─network								网络相关	
+    │  │  │  │      │  │  ├─customer							网络消费者
+    │  │  │  │      │  │  ├─listener							网络监听器
+    │  │  │  │      │  │  └─processor							线程处理器
+    │  │  │  │      │  ├─session								会话管理	
+    │  │  │  │      │  └─util									工具类
+    │  │  │  │      ├─demopro									测试代码
+    │  │  │  │      │  └─net
+    │  │  │  │      └─server									主包
+    │  │  │  │          ├─biz									业务代码			
+    │  │  │  │          │  ├─constant							常量
+    │  │  │  │          │  ├─dao								数据库
+    │  │  │  │          │  │  └─mysql
+    │  │  │  │          │  ├─dictionary							消息字典
+    │  │  │  │          │  ├─entity								实体类	
+    │  │  │  │          │  ├─handler							控制器
+    │  │  │  │          │  └─services							业务处理器
+    │  │  │  │          │      └─impl
+    │  │  │  │          ├─channel								各种协议存放
+    │  │  │  │          │  └─tcp								tcp协议
+    │  │  │  │          │      └─str
+    │  │  │  │          ├─core									服务核心包
+    │  │  │  │          │  ├─customer							消费者
+    │  │  │  │          │  ├─listener
+    │  │  │  │          │  └─processor
+    │  │  │  │          └─pojo									配置文件
+    │  │  │  └─org
+    │  │  │      └─apache
+    │  │  │          └─ibatis
+    │  │  │              └─builder
+    │  │  │                  └─annotation						重写mybatis中的
+    │  │  └─resources											资源文件
+    │  │      ├─mybatis
+    │  │      │  └─jpa
+    │  │      ├─properties										
+    │  │      └─spring
+    │  └─test													测试代码		
+    │      └─java
+    │          └─com
+    │              └─lizhaoblog
+    │                  ├─common
+    │                  ├─demopro
+    │                  │  └─net
+    │                  ├─javase
+    │                  └─server									服务测试
+    │                      └─channel
+    │                          └─tcp
+    │                              └─str
+    └─target
 
+#### 软件框架
+1. 使用框架：Spring，Netty，Mybatis，Redis，junit，log4j等。
+2. 编译器：IDEA
+3. JDK版本：1.8
+
+#### 配置文件
+  1. db-config-dev.properties：数据库配置文件
+  2. server-config-dev.properties：服务器属性
+  3. etc--sql--jg_server.sql：数据库脚本
 
 #### 安装教程
+  1. 编译器中打开
+  2. 按照自己的需要修改配置文件(上条)
+  3. 运行com.lizhaoblog.Main函数
+  4. 测试：运行com.lizhaoblog.server.channel.NettyClientTest的对应方法
+  
+#### 详细说明
 
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
+1. 同步更新，地址：Java游戏服务器开发，https://blog.csdn.net/cmqwan/article/details/80858272
+2. 可以加qq群一起探讨Java游戏服务器开发的相关知识	676231524
 
 #### 参与贡献
 
@@ -25,13 +105,3 @@ JgServer
 2. 新建 Feat_xxx 分支
 3. 提交代码
 4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [http://git.mydoc.io/](http://git.mydoc.io/)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
