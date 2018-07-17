@@ -28,6 +28,9 @@ public class ConstantValue {
   public static final String PROTOCOL_TYPE_CUSTOM = "CUSTOM";
   public static final String PROTOCOL_TYPE_WEBSOCKET = "WEBSOCKET";
 
+  public static final String PROJECT_CHARSET = "UTF-8";
+
+
   /**
    * 登录和下线队列
    */
