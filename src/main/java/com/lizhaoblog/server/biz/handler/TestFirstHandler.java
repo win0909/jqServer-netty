@@ -11,18 +11,12 @@
 package com.lizhaoblog.server.biz.handler;
 
 import com.lizhaoblog.base.concurrent.handler.AbstractHandler;
+import com.lizhaoblog.base.message.StringMessage;
 import com.lizhaoblog.base.session.Session;
-import com.lizhaoblog.base.session.SessionManager;
-import com.lizhaoblog.server.biz.dao.mysql.UserDao;
-import com.lizhaoblog.server.biz.entity.User;
 import com.lizhaoblog.server.biz.services.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -33,7 +27,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Component
-public class TestFirstHandler extends AbstractHandler<String, Session> {
+public class TestFirstHandler extends AbstractHandler<StringMessage, Session> {
   @Autowired
   private UserService userService;
 

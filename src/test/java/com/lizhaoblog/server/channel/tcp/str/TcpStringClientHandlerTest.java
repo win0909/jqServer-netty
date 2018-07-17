@@ -25,7 +25,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @see TcpMessageStringHandler
  * @since 1.0.0
  */
-public class TcpStringClientHandlerTest extends SimpleChannelInboundHandler<String> {
+public class TcpStringClientHandlerTest extends SimpleChannelInboundHandler<Object> {
   private static final Logger logger = LoggerFactory.getLogger(TcpStringClientHandlerTest.class);
 
   @Override
@@ -39,7 +39,7 @@ public class TcpStringClientHandlerTest extends SimpleChannelInboundHandler<Stri
   }
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, String data) throws Exception {
+  protected void channelRead0(ChannelHandlerContext ctx, Object data) throws Exception {
     logger.info("数据内容：data=" + data);
 
     //关闭链路

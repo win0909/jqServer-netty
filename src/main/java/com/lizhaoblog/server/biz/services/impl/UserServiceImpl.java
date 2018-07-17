@@ -10,8 +10,12 @@
  */
 package com.lizhaoblog.server.biz.services.impl;
 
+import com.google.gson.Gson;
+import com.lizhaoblog.base.message.StringMessage;
 import com.lizhaoblog.base.session.Session;
 import com.lizhaoblog.base.session.SessionManager;
+import com.lizhaoblog.base.util.GsonUtil;
+import com.lizhaoblog.server.biz.constant.CommonValue;
 import com.lizhaoblog.server.biz.dao.mysql.UserDao;
 import com.lizhaoblog.server.biz.entity.User;
 import com.lizhaoblog.server.biz.services.UserService;
@@ -21,7 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -54,11 +60,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void doTest(String message, Session session) {
-    logger.info("服务器收到的数据内容：data=" + message);
-    String result = "小李，我是服务器，我收到你的信息了。";
-    SessionManager.getInstance().sendMessage(session, result);
+  public void doTest(StringMessage message, Session session) {
 
+    logger.info("服务器收到的数据内容：data=" + message);
     List<User> all = listAll();
     logger.info(all.toString());
 
@@ -70,6 +74,24 @@ public class UserServiceImpl implements UserService {
 
     all = listAll();
     logger.info(all.toString());
+
+    String result = "";
+    Map<String, Object> linkedHashMap = new LinkedHashMap<>();// 使用LinkedHashMap将结果按先进先出顺序排列
+    linkedHashMap.put("key1", "value1");
+    linkedHashMap.put("key2", "小李，我是服务器，我收到你的信息了。");
+    linkedHashMap.put("key3", 3);
+    Gson gson = GsonUtil.getGson();
+    String str = gson.toJson(linkedHashMap);
+
+    StringMessage stringMessage = StringMessage.create(CommonValue.CM_MSG_TEST);
+    stringMessage.setStatusCode(CommonValue.MSG_STATUS_CODE_SUCCESS);
+    stringMessage.setBody(str);
+
+//    SessionManager.getInstance().sendMessage(session, result);
+    SessionManager.getInstance().sendMessage(session, stringMessage);
+
+
+
   }
 
 }

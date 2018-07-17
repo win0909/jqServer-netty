@@ -10,6 +10,8 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
+import com.lizhaoblog.base.message.codec.MessageDecoder;
+import com.lizhaoblog.base.message.codec.MessageEncoder;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.springframework.stereotype.Component;
@@ -17,8 +19,6 @@ import org.springframework.stereotype.Component;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -30,16 +30,26 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 @Component
 public class TcpServerStringInitializer extends ChannelInitializer<SocketChannel> {
+  private static final int MAX_FRAME_LENGTH = 1024 * 1024;
+  private static final int LENGTH_FIELD_LENGTH = 4;
+  private static final int LENGTH_FIELD_OFFSET = 2;
+  private static final int LENGTH_ADJUSTMENT = 0;
+  private static final int INITIAL_BYTES_TO_STRIP = 0;
 
   @Override
   protected void initChannel(SocketChannel ch) {
     ChannelPipeline pipeline = ch.pipeline();
-    pipeline.addLast("decoder", new StringDecoder());
-    pipeline.addLast("encoder", new StringEncoder());
-    TcpMessageStringHandler tcpMessageStringHandler = (TcpMessageStringHandler) ServerConfig.getInstance().getApplicationContext()
-            .getBean("tcpMessageStringHandler");
-    pipeline.addLast(tcpMessageStringHandler);
+    //    pipeline.addLast("decoder", new StringDecoder());
+    //    pipeline.addLast("encoder", new StringEncoder());
+    //    pipeline.addLast("encoder", new StringEncoder());
+    pipeline.addLast("encoder", new MessageEncoder());
+    pipeline.addLast("decoder",
+            new MessageDecoder(MAX_FRAME_LENGTH, LENGTH_FIELD_LENGTH, LENGTH_FIELD_OFFSET, LENGTH_ADJUSTMENT,
+                    INITIAL_BYTES_TO_STRIP, false));
 
+    TcpMessageStringHandler tcpMessageStringHandler = (TcpMessageStringHandler) ServerConfig.getInstance()
+            .getApplicationContext().getBean("tcpMessageStringHandler");
+    pipeline.addLast(tcpMessageStringHandler);
 
   }
 
