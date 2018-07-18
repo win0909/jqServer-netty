@@ -10,7 +10,7 @@
  */
 package com.lizhaoblog.base.network.customer;
 
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.IMessage;
 
 import io.netty.channel.Channel;
 
@@ -29,5 +29,5 @@ public interface INetworkConsumer {
    * @param message message 客户端发送的消息
    * @param channel channel 与客户端连接的管道
    */
-  void consume(StringMessage message, Channel channel);
+  void consume(IMessage message, Channel channel);
 }

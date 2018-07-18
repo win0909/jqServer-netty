@@ -20,11 +20,12 @@ package com.lizhaoblog.server.biz.constant;
  */
 public class CommonValue {
 
-  public static final int MSG_STATUS_CODE_SUCCESS= 1;
-  public static final int MSG_STATUS_CODE_FAIL= 900;
+  public static final short MSG_STATUS_CODE_SUCCESS= 1;
+  public static final short MSG_STATUS_CODE_FAIL= 900;
 
 
-  public static final int CM_MSG_TEST = 10001;
+  public static final short CM_MSG_TEST = 10001;
+  public static final short CM_MSG_TEST_BYTE = 10002;
 
   private CommonValue() {
   }

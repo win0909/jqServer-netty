@@ -10,10 +10,8 @@
  */
 package com.lizhaoblog.base.message.codec;
 
-import com.lizhaoblog.base.constant.ConstantValue;
-import com.lizhaoblog.base.message.StringMessage;
-
-import java.nio.charset.Charset;
+import com.lizhaoblog.base.exception.MessageCodecException;
+import com.lizhaoblog.base.message.IMessage;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,18 +25,19 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @date 2018/7/16 14:58
  * @since 1.0.1
  */
-public class MessageEncoder extends MessageToByteEncoder<StringMessage> {
+public class MessageEncoder extends MessageToByteEncoder<IMessage> {
 
   @Override
-  protected void encode(ChannelHandlerContext ctx, StringMessage msg, ByteBuf out) throws Exception {
+  protected void encode(ChannelHandlerContext ctx, IMessage msg, ByteBuf out) throws MessageCodecException {
     if (null == msg) {
-      throw new Exception("msg is null");
+      throw new MessageCodecException("msg is null");
     }
 
-    String body = msg.getBody();
-    byte[] bodyBytes = body.getBytes(Charset.forName(ConstantValue.PROJECT_CHARSET));
-    out.writeInt(msg.getMessageId());
-    out.writeInt(msg.getStatusCode());
+    //    String body = msg.getBody();
+    //    byte[] bodyBytes = body.getBytes(Charset.forName(ConstantValue.PROJECT_CHARSET));
+    byte[] bodyBytes = msg.getBodyByte();
+    out.writeShort(msg.getMessageId());
+    out.writeShort(msg.getStatusCode());
     out.writeInt(bodyBytes.length);
     out.writeBytes(bodyBytes);
   }

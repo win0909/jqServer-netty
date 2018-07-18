@@ -14,6 +14,7 @@ import com.lizhaoblog.base.concurrent.commond.IHandler;
 import com.lizhaoblog.base.concurrent.dictionary.IMessageDictionary;
 import com.lizhaoblog.base.util.StringUtil;
 import com.lizhaoblog.server.biz.constant.CommonValue;
+import com.lizhaoblog.server.biz.handler.TestFirstByteHandler;
 import com.lizhaoblog.server.biz.handler.TestFirstHandler;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
@@ -36,20 +37,21 @@ import javax.annotation.PostConstruct;
 @Component
 @Scope("singleton")
 public class MessageHandlerDictionary implements IMessageDictionary {
-  private final Map<Integer, Class<? extends IHandler>> idHandleMap = new HashMap<>(10);
+  private final Map<Short, Class<? extends IHandler>> idHandleMap = new HashMap<>(10);
 
   @PostConstruct
   public void init() {
     register(CommonValue.CM_MSG_TEST, TestFirstHandler.class);
+    register(CommonValue.CM_MSG_TEST_BYTE, TestFirstByteHandler.class);
   }
 
   @Override
-  public void register(int messageId, Class<? extends IHandler> handler) {
+  public void register(Short messageId, Class<? extends IHandler> handler) {
     idHandleMap.put(messageId, handler);
   }
 
   @Override
-  public IHandler getHandlerFromMessageId(Integer messageId) {
+  public IHandler getHandlerFromMessageId(Short messageId) {
     Class<? extends IHandler> clazz = idHandleMap.get(messageId);
     if (clazz != null) {
       try {

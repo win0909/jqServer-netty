@@ -11,7 +11,9 @@
 package com.lizhaoblog.server.biz.services.impl;
 
 import com.google.gson.Gson;
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.impl.ByteMessage;
+import com.lizhaoblog.base.message.IMessage;
+import com.lizhaoblog.base.message.impl.StringMessage;
 import com.lizhaoblog.base.session.Session;
 import com.lizhaoblog.base.session.SessionManager;
 import com.lizhaoblog.base.util.GsonUtil;
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void doTest(StringMessage message, Session session) {
+  public void doTest(IMessage message, Session session) {
 
     logger.info("服务器收到的数据内容：data=" + message);
     List<User> all = listAll();
@@ -83,13 +85,26 @@ public class UserServiceImpl implements UserService {
     Gson gson = GsonUtil.getGson();
     String str = gson.toJson(linkedHashMap);
 
-    StringMessage stringMessage = StringMessage.create(CommonValue.CM_MSG_TEST);
+    StringMessage stringMessage = new StringMessage(CommonValue.CM_MSG_TEST);
     stringMessage.setStatusCode(CommonValue.MSG_STATUS_CODE_SUCCESS);
     stringMessage.setBody(str);
 
 //    SessionManager.getInstance().sendMessage(session, result);
     SessionManager.getInstance().sendMessage(session, stringMessage);
 
+
+
+  }
+
+  @Override
+  public void doTestByte(IMessage message, Session session) {
+
+    logger.info("服务器收到的doTestByte 数据内容：data=" + message);
+    ByteMessage byteMessage = new ByteMessage();
+    byteMessage.setMessageId(com.lizhaoblog.server.biz.constant.CommonValue.CM_MSG_TEST_BYTE);
+    byteMessage.setStatusCode(com.lizhaoblog.server.biz.constant.CommonValue.MSG_STATUS_CODE_SUCCESS);
+    byteMessage.addAttr(2);
+    SessionManager.getInstance().sendMessage(session, byteMessage);
 
 
   }

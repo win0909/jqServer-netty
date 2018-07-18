@@ -10,7 +10,7 @@
  */
 package com.lizhaoblog.base.session;
 
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.IMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,8 +130,10 @@ public class SessionManager {
     session.getChannel().writeAndFlush(msg);
   }
 
-  public void sendMessage(Session session, StringMessage stringMessage) {
-    session.getChannel().writeAndFlush(stringMessage);
+//  public void sendMessage(Session session, StringMessage stringMessage) {
+//    session.getChannel().writeAndFlush(stringMessage);
+//  }
+  public void sendMessage(Session session, IMessage iMessage) {
+    session.getChannel().writeAndFlush(iMessage);
   }
-
 }

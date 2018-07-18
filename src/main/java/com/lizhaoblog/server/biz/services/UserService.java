@@ -10,7 +10,7 @@
  */
 package com.lizhaoblog.server.biz.services;
 
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.session.Session;
 import com.lizhaoblog.server.biz.entity.User;
 
@@ -32,5 +32,6 @@ public interface UserService {
 
   void insert(User user);
 
-  void doTest(StringMessage message, Session session);
+  void doTest(IMessage message, Session session);
+  void doTestByte(IMessage message, Session session);
 }

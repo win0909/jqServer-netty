@@ -8,13 +8,14 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.lizhaoblog.server.channel.tcp.str;
+package com.lizhaoblog.server.channel.tcp.bytec;
 
 import com.lizhaoblog.base.constant.ConstantValue;
-import com.lizhaoblog.base.message.impl.StringMessage;
-import com.lizhaoblog.common.CommonValue;
+import com.lizhaoblog.base.message.impl.ByteMessage;
 import com.lizhaoblog.base.message.codec.MessageDecoder;
 import com.lizhaoblog.base.message.codec.MessageEncoder;
+import com.lizhaoblog.common.CommonValue;
+import com.lizhaoblog.server.channel.tcp.str.TcpServerStringInitializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +38,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @see TcpServerStringInitializer
  * @since 1.0.0
  */
-public class TcpStringClientTest {
-  private static final Logger logger = LoggerFactory.getLogger(TcpStringClientTest.class);
+public class TcpByteClientTest {
+  private static final Logger logger = LoggerFactory.getLogger(TcpByteClientTest.class);
   private static EventLoopGroup group = new NioEventLoopGroup();
 
   public void run() throws InterruptedException {
@@ -55,23 +56,19 @@ public class TcpStringClientTest {
                 ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP,
                 false));
 
-        pipeline.addLast(new TcpStringClientHandlerTest());
+        pipeline.addLast(new TcpByteClientHandlerTest());
       }
     });
 
+    ByteMessage byteMessage = new ByteMessage();
+    byteMessage.setMessageId(com.lizhaoblog.server.biz.constant.CommonValue.CM_MSG_TEST_BYTE);
+    byteMessage.setStatusCode(com.lizhaoblog.server.biz.constant.CommonValue.MSG_STATUS_CODE_SUCCESS);
+    byteMessage.addAttr(2);
+
     // 连接服务端
     ChannelFuture channelFuture = bootstrap.connect(CommonValue.IP, CommonValue.PORT).sync();
-
-    //    String msg = "小王，我是客户端";
-    String msg = "{\n" + "\t\"messageId\":10001,\n" + "\t\"statusCode\":1,\n"
-            + "\t\"body\":\"{\\\"keyc\\\":\\\"valuec\\\"}\"\n" + "}";
-    //    channelFuture.channel().writeAndFlush(msg);
-
-    StringMessage stringMessage = StringMessage.create(msg);
-    channelFuture.channel().writeAndFlush(stringMessage);
-
-    logger.info("向Socket服务器发送数据:" + msg);
-
+    channelFuture.channel().writeAndFlush(byteMessage);
+    logger.info("向Socket服务器发送数据:" + byteMessage);
     channelFuture.channel().closeFuture().sync();
   }
 }

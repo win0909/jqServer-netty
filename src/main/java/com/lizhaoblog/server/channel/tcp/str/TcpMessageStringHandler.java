@@ -10,7 +10,7 @@
  */
 package com.lizhaoblog.server.channel.tcp.str;
 
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.network.customer.INetworkConsumer;
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
 
@@ -31,7 +31,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 @Component
 @Scope("prototype")
-public class TcpMessageStringHandler extends SimpleChannelInboundHandler<StringMessage> {
+public class TcpMessageStringHandler extends SimpleChannelInboundHandler<IMessage> {
 
   @Autowired
   private INetworkEventListener listener;
@@ -39,11 +39,8 @@ public class TcpMessageStringHandler extends SimpleChannelInboundHandler<StringM
   private INetworkConsumer consumer;
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, StringMessage msg) {
-    //    StringMessage stringMessage = StringMessage.create(msg);
-    StringMessage stringMessage = msg;
-
-    consumer.consume(stringMessage, ctx.channel());
+  protected void channelRead0(ChannelHandlerContext ctx, IMessage msg) {
+    consumer.consume(msg, ctx.channel());
   }
 
   @Override

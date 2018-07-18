@@ -11,7 +11,7 @@
 package com.lizhaoblog.server.core.customer;
 
 import com.lizhaoblog.base.concurrent.commond.IHandler;
-import com.lizhaoblog.base.message.StringMessage;
+import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.network.processor.IProcessor;
 import com.lizhaoblog.base.concurrent.dictionary.IMessageDictionary;
 import com.lizhaoblog.base.constant.ConstantValue;
@@ -61,17 +61,17 @@ public class NetworkConsumer implements INetworkConsumer {
   }
 
   @Override
-  public void consume(StringMessage message, Channel channel) {
+  public void consume(IMessage message, Channel channel) {
     //获取session，后面需要根据session中的channel进行消息发送
     Session session = SessionManager.getInstance().getSessionByChannel(channel);
     if (session == null) {
       logger.debug("consume session is not found");
       return;
     }
-    int messageId = message.getMessageId();
+    short messageId = message.getMessageId();
     logger.debug(messageId + "");
 
-    IHandler<StringMessage, Session> handler = messageDictionary.getHandlerFromMessageId(messageId);
+    IHandler<IMessage, Session> handler = messageDictionary.getHandlerFromMessageId(messageId);
     handler.setMessage(message);
     handler.setParam(session);
     IProcessor processor = processors.get(ConstantValue.QUEUE_LOGIC);

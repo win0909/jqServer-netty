@@ -27,11 +27,11 @@ public interface IMessageDictionary {
    * @param messageId
    * @param handler
    */
-  void register(int messageId,  Class<? extends IHandler> handler);
+  void register(Short messageId,  Class<? extends IHandler> handler);
   /**
    * 根据messageId获取handler
    * @param messageId
    * @return
    */
-  IHandler getHandlerFromMessageId(Integer messageId);
+  IHandler getHandlerFromMessageId(Short messageId);
 }

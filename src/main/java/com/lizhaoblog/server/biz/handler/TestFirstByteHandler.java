@@ -27,12 +27,12 @@ import org.springframework.stereotype.Component;
  * @since 1.0.0
  */
 @Component
-public class TestFirstHandler extends AbstractHandler<IMessage, Session> {
+public class TestFirstByteHandler extends AbstractHandler<IMessage, Session> {
   @Autowired
   private UserService userService;
 
   @Override
   public void doAction() {
-    userService.doTest(message,param);
+    userService.doTestByte(message,param);
   }
 }

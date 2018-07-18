@@ -38,6 +38,8 @@ public class ServerConfig {
   private String channelType;
   @Value("#{cfgProps['protocolType']}")
   private String protocolType;
+  @Value("#{cfgProps['messageType']}")
+  private String messageType;
 
   private ApplicationContext applicationContext;
 
@@ -64,6 +66,7 @@ public class ServerConfig {
     logger.info("protocolType  : " + protocolType);
     logger.info("port          : " + port);
     logger.info("channelType   : " + channelType);
+    logger.info("messageType   : " + messageType);
     logger.info("**************Server INFO******************");
   }
 
@@ -89,6 +92,14 @@ public class ServerConfig {
 
   public void setProtocolType(String protocolType) {
     this.protocolType = protocolType;
+  }
+
+  public String getMessageType() {
+    return messageType;
+  }
+
+  public void setMessageType(String messageType) {
+    this.messageType = messageType;
   }
 
   public ApplicationContext getApplicationContext() {

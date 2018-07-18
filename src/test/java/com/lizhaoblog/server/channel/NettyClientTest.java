@@ -10,8 +10,11 @@
  */
 package com.lizhaoblog.server.channel;
 
+import com.lizhaoblog.server.channel.tcp.bytec.TcpByteClientTest;
 import com.lizhaoblog.server.channel.tcp.str.TcpStringClientTest;
+import com.lizhaoblog.server.pojo.ServerConfig;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -23,10 +26,23 @@ import org.junit.Test;
  * @since 1.0.0
  */
 public class NettyClientTest {
+  @Before
+  public void init() {
+    ServerConfig.getInstance().init();
+    ServerConfig.getInstance().setMessageType("STRING");
+  }
+
   @Test
   public void testTcpStringClient() throws InterruptedException {
     TcpStringClientTest tcpStringClientTest = new TcpStringClientTest();
     tcpStringClientTest.run();
+  }
+
+  @Test
+  public void testTcpByteClient() throws InterruptedException {
+    ServerConfig.getInstance().setMessageType("BYTE");
+    TcpByteClientTest tcpByteClientTest = new TcpByteClientTest();
+    tcpByteClientTest.run();
   }
 
 }

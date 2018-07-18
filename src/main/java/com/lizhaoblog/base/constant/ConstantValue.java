@@ -28,8 +28,16 @@ public class ConstantValue {
   public static final String PROTOCOL_TYPE_CUSTOM = "CUSTOM";
   public static final String PROTOCOL_TYPE_WEBSOCKET = "WEBSOCKET";
 
+  public static final String MESSAGE_TYPE_STRING = "STRING";
+  public static final String MESSAGE_TYPE_BYTE = "BYTE";
+
   public static final String PROJECT_CHARSET = "UTF-8";
 
+  public static final int MESSAGE_CODEC_MAX_FRAME_LENGTH = 1024 * 1024;
+  public static final int MESSAGE_CODEC_LENGTH_FIELD_LENGTH = 4;
+  public static final int MESSAGE_CODEC_LENGTH_FIELD_OFFSET = 2;
+  public static final int MESSAGE_CODEC_LENGTH_ADJUSTMENT = 0;
+  public static final int MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP = 0;
 
   /**
    * 登录和下线队列
