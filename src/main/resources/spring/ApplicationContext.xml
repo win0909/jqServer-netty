@@ -21,8 +21,8 @@
 
   <!--&lt;!&ndash;事务&ndash;&gt;-->
   <!--<tx:annotation-driven/>-->
-  <!--&lt;!&ndash;定时任务&ndash;&gt;-->
-  <!--<task:annotation-driven/>-->
+  <!--定时任务-->
+  <task:annotation-driven/>
 
   <!--指向的配置文件-->
   <bean id="cfgProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -38,6 +38,8 @@
     </property>
   </bean>
 
+
+
   <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetClass"
               value="org.springframework.util.Log4jConfigurer"/>
@@ -48,6 +50,8 @@
       </list>
     </property>
   </bean>
+
+
 
   <import resource="ApplicationContext-mysql.xml"/>
 

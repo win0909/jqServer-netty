@@ -15,6 +15,7 @@ import com.lizhaoblog.base.message.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -121,6 +122,16 @@ public class SessionManager {
   public Session getSessionByChannel(Channel channel) {
     return AttributeUtil.get(channel, SessionAttributeKey.SESSION);
   }
+
+  /**
+   * 获取session的数组
+   * @return  session的数组
+   */
+  public Session[] getSessionArray() {
+    Collection<Session> values = uidSessionMap.values();
+    return values.toArray(new Session[values.size()]);
+  }
+
 
   public void sendMessage(Channel channel, String msg) {
     sendMessage(getSessionByChannel(channel), msg);
