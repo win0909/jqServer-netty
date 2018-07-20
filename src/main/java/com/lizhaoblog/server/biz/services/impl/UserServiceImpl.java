@@ -11,6 +11,7 @@
 package com.lizhaoblog.server.biz.services.impl;
 
 import com.google.gson.Gson;
+import com.lizhaoblog.base.event.EventUtil;
 import com.lizhaoblog.base.message.impl.ByteMessage;
 import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.message.impl.StringMessage;
@@ -89,10 +90,8 @@ public class UserServiceImpl implements UserService {
     stringMessage.setStatusCode(CommonValue.MSG_STATUS_CODE_SUCCESS);
     stringMessage.setBody(str);
 
-//    SessionManager.getInstance().sendMessage(session, result);
+    //    SessionManager.getInstance().sendMessage(session, result);
     SessionManager.getInstance().sendMessage(session, stringMessage);
-
-
 
   }
 
@@ -106,7 +105,7 @@ public class UserServiceImpl implements UserService {
     byteMessage.addAttr(2);
     SessionManager.getInstance().sendMessage(session, byteMessage);
 
-
+    EventUtil.fireEvent(CommonValue.EVENT_TYPE_LOGIN);
   }
 
 }

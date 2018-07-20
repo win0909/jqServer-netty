@@ -20,12 +20,17 @@ package com.lizhaoblog.server.biz.constant;
  */
 public class CommonValue {
 
-  public static final short MSG_STATUS_CODE_SUCCESS= 1;
-  public static final short MSG_STATUS_CODE_FAIL= 900;
+  /***************************************通讯状态码**********************************************/
+  public static final short MSG_STATUS_CODE_SUCCESS = 1;
+  public static final short MSG_STATUS_CODE_FAIL = 900;
 
-
+  /***************************************通讯消息号 客户端发送至服务端**********************************************/
   public static final short CM_MSG_TEST = 10001;
   public static final short CM_MSG_TEST_BYTE = 10002;
+
+  /***************************************事件消息号**********************************************/
+  public static final int EVENT_TYPE_LOGIN = 1001;
+  public static final int EVENT_TYPE_LOGOUT = 1002;
 
   private CommonValue() {
   }
