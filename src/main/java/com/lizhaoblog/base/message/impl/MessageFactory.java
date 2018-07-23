@@ -12,7 +12,6 @@ package com.lizhaoblog.base.message.impl;
 
 import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.message.IMessage;
-import com.lizhaoblog.server.pojo.ServerConfig;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -29,9 +28,8 @@ public class MessageFactory {
    *
    * @return IMessage的子类
    */
-  public static IMessage create() {
+  public static IMessage create( String messageType) {
     IMessage iMessage = null;
-    String messageType = ServerConfig.getInstance().getMessageType();
     switch (messageType) {
       case ConstantValue.MESSAGE_TYPE_STRING:
         iMessage = new StringMessage();

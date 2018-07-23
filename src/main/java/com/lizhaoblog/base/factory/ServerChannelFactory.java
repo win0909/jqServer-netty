@@ -10,9 +10,7 @@
  */
 package com.lizhaoblog.base.factory;
 
-import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.exception.ServerErrException;
-import com.lizhaoblog.server.channel.tcp.str.TcpServerStringInitializer;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.slf4j.Logger;
@@ -22,7 +20,6 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -35,10 +32,11 @@ import io.netty.channel.socket.SocketChannel;
 public class ServerChannelFactory {
   private static final Logger logger = LoggerFactory.getLogger(ServerChannelFactory.class);
 
-  public static Channel createAcceptorChannel() throws ServerErrException {
+  public static Channel createAcceptorChannel(String channelType, ChannelInitializer<? extends Channel> childChannel)
+          throws ServerErrException {
     Integer port = ServerConfig.getInstance().getPort();
-    final ServerBootstrap serverBootstrap = ServerBootstrapFactory.createServerBootstrap();
-    serverBootstrap.childHandler(getChildHandler());
+    final ServerBootstrap serverBootstrap = ServerBootstrapFactory.createServerBootstrap(channelType);
+    serverBootstrap.childHandler(childChannel);
     //        serverBootstrap.childHandler()
     logger.info("创建Server...");
     try {
@@ -58,20 +56,20 @@ public class ServerChannelFactory {
       throw new ServerErrException(e);
     }
   }
-
-  private static ChannelInitializer<SocketChannel> getChildHandler() throws ServerErrException {
-
-    String protocolType = ServerConfig.getInstance().getProtocolType();
-    if (ConstantValue.PROTOCOL_TYPE_HTTP.equals(protocolType) || ConstantValue.PROTOCOL_TYPE_HTTPS
-            .equals(protocolType)) {
-    } else if (ConstantValue.PROTOCOL_TYPE_TCP.equals(protocolType)) {
-//      return new TcpServerStringInitializer();
-      return (ChannelInitializer<SocketChannel>) ServerConfig.getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
-    } else if (ConstantValue.PROTOCOL_TYPE_WEBSOCKET.equals(protocolType)) {
-    } else if (ConstantValue.PROTOCOL_TYPE_CUSTOM.equals(protocolType)) {
-    } else {
-    }
-    String errMsg = "undefined protocol:" + protocolType + "!";
-    throw new ServerErrException(errMsg);
-  }
+  //
+  //  private static ChannelInitializer<SocketChannel> getChildHandler() throws ServerErrException {
+  //
+  //    String protocolType = ServerConfig.getInstance().getProtocolType();
+  //    if (ConstantValue.PROTOCOL_TYPE_HTTP.equals(protocolType) || ConstantValue.PROTOCOL_TYPE_HTTPS
+  //            .equals(protocolType)) {
+  //    } else if (ConstantValue.PROTOCOL_TYPE_TCP.equals(protocolType)) {
+  ////      return new TcpServerStringInitializer();
+  //      return (ChannelInitializer<SocketChannel>) ServerConfig.getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
+  //    } else if (ConstantValue.PROTOCOL_TYPE_WEBSOCKET.equals(protocolType)) {
+  //    } else if (ConstantValue.PROTOCOL_TYPE_CUSTOM.equals(protocolType)) {
+  //    } else {
+  //    }
+  //    String errMsg = "undefined protocol:" + protocolType + "!";
+  //    throw new ServerErrException(errMsg);
+  //  }
 }

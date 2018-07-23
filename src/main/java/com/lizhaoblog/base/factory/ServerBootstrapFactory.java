@@ -12,7 +12,6 @@ package com.lizhaoblog.base.factory;
 
 import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.exception.ServerErrException;
-import com.lizhaoblog.server.pojo.ServerConfig;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
@@ -33,10 +32,10 @@ public class ServerBootstrapFactory {
   private ServerBootstrapFactory() {
   }
 
-  public static ServerBootstrap createServerBootstrap() throws ServerErrException {
+  public static ServerBootstrap createServerBootstrap(String channelType) throws ServerErrException {
 
     ServerBootstrap serverBootstrap = new ServerBootstrap();
-    switch (ServerConfig.getInstance().getChannelType()) {
+    switch (channelType) {
       case ConstantValue.CHANNEL_TYPE_NIO:
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -50,8 +49,7 @@ public class ServerBootstrapFactory {
 
         return serverBootstrap;
       default:
-        throw new ServerErrException(
-                "Failed to create ServerBootstrap,  " +ServerConfig.getInstance().getChannelType() + " not supported!");
+        throw new ServerErrException("Failed to create ServerBootstrap,  " + channelType + " not supported!");
     }
   }
 }

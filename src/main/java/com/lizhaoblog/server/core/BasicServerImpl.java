@@ -12,11 +12,14 @@ package com.lizhaoblog.server.core;
 
 import com.lizhaoblog.base.factory.ServerChannelFactory;
 import com.lizhaoblog.base.network.IServer;
+import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.springframework.stereotype.Component;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -32,7 +35,11 @@ public class BasicServerImpl implements IServer {
 
   @Override
   public void start() throws Exception {
-    acceptorChannel = ServerChannelFactory.createAcceptorChannel();
+    ChannelInitializer<SocketChannel> tcpServerStringInitializer = (ChannelInitializer<SocketChannel>) ServerConfig
+            .getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
+    String channelType = ServerConfig.getInstance().getChannelType();
+
+    acceptorChannel = ServerChannelFactory.createAcceptorChannel(channelType, tcpServerStringInitializer);
     acceptorChannel.closeFuture().sync();
   }
 

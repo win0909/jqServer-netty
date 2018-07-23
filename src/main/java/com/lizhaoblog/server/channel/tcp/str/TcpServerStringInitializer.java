@@ -38,7 +38,8 @@ public class TcpServerStringInitializer extends ChannelInitializer<SocketChannel
     pipeline.addLast("encoder", new MessageEncoder());
     pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
             ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
-            ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP, false));
+            ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP, false,
+            ServerConfig.getInstance().getMessageType()));
 
     TcpMessageStringHandler tcpMessageStringHandler = (TcpMessageStringHandler) ServerConfig.getInstance()
             .getApplicationContext().getBean("tcpMessageStringHandler");

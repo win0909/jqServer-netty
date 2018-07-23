@@ -15,6 +15,7 @@ import com.lizhaoblog.base.message.impl.StringMessage;
 import com.lizhaoblog.common.CommonValue;
 import com.lizhaoblog.base.message.codec.MessageDecoder;
 import com.lizhaoblog.base.message.codec.MessageEncoder;
+import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class TcpStringClientTest {
         pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
                 ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
                 ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP,
-                false));
+                false, ServerConfig.getInstance().getMessageType()));
 
         pipeline.addLast(new TcpStringClientHandlerTest());
       }

@@ -30,6 +30,7 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 
   //判断传送客户端传送过来的数据是否按照协议传输，头部信息的大小应该是 int+int+int = 4+4+4 = 12
   private static final int HEADER_SIZE = 12;
+  private String messageType;
 
   /**
    * @param maxFrameLength      解码时，处理每个帧数据的最大长度
@@ -39,9 +40,15 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
    * @param initialBytesToStrip 解析的时候需要跳过的字节数
    * @param failFast            为true，当frame长度超过maxFrameLength时立即报TooLongFrameException异常，为false，读取完整个帧再报异常
    */
-  public MessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
+  private MessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
           int initialBytesToStrip, boolean failFast) {
     super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast);
+  }
+
+  public MessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment,
+          int initialBytesToStrip, boolean failFast, String messageType) {
+    this(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast);
+    this.messageType = messageType;
   }
 
   @Override
@@ -50,7 +57,7 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
       return null;
     }
 
-    IMessage iMessage = MessageFactory.create();
+    IMessage iMessage = MessageFactory.create(messageType);
     if (iMessage == null) {
       throw new MessageCodecException("MessageFactory 获取Message为null");
     }
