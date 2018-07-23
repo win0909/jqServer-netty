@@ -35,7 +35,7 @@ import io.netty.channel.socket.SocketChannel;
  */
 @Component
 public class BasicServerImpl implements IServer {
-  Channel acceptorChannel;
+  private Channel acceptorChannel;
   private static final Logger logger = LoggerFactory.getLogger(NetworkListener.class);
 
   @Override
