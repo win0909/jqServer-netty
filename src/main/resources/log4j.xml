@@ -9,29 +9,29 @@
 			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %c - %m%n" />
 		</layout>
 	</appender>
-	
+
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="logs/server-test/server.log" />
+		<param name="File" value="logs/server.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS\} %-5p] [%t] %c{3\} - %m%n" />
 		</layout>
 	</appender>
-	
+
 	<!-- Application Loggers -->
 	<logger name="com.fh">
 		<level value="info" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
-	</logger>	
-	
+	</logger>
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -59,5 +59,5 @@
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>
-	
+
 </log4j:configuration>

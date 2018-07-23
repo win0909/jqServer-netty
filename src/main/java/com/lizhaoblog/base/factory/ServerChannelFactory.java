@@ -11,6 +11,7 @@
 package com.lizhaoblog.base.factory;
 
 import com.lizhaoblog.base.exception.ServerErrException;
+import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +32,9 @@ import io.netty.channel.ChannelInitializer;
 public class ServerChannelFactory {
   private static final Logger logger = LoggerFactory.getLogger(ServerChannelFactory.class);
 
-  public static Channel createAcceptorChannel(String channelType, ChannelInitializer<? extends Channel> childChannel,
-          Integer port) throws ServerErrException {
+  public static Channel createAcceptorChannel(String channelType, ChannelInitializer<? extends Channel> childChannel)
+          throws ServerErrException {
+    Integer port = ServerConfig.getInstance().getPort();
     final ServerBootstrap serverBootstrap = ServerBootstrapFactory.createServerBootstrap(channelType);
     serverBootstrap.childHandler(childChannel);
     //        serverBootstrap.childHandler()
@@ -41,6 +43,7 @@ public class ServerChannelFactory {
       ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
       channelFuture.awaitUninterruptibly();
       if (channelFuture.isSuccess()) {
+        ServerConfig.getInstance().printServerInfo();
         return channelFuture.channel();
       } else {
         String errMsg = "Failed to open socket! Cannot bind to port: " + port + "!";

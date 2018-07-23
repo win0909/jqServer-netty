@@ -10,13 +10,10 @@
  */
 package com.lizhaoblog.server.core;
 
-import com.lizhaoblog.base.exception.ServerErrException;
 import com.lizhaoblog.base.factory.ServerChannelFactory;
 import com.lizhaoblog.base.network.IServer;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import io.netty.channel.Channel;
@@ -34,27 +31,16 @@ import io.netty.channel.socket.SocketChannel;
  */
 @Component
 public class BasicServerImpl implements IServer {
-  private static final Logger logger = LoggerFactory.getLogger(BasicServerImpl.class);
-
   Channel acceptorChannel;
 
   @Override
-  public void start() {
+  public void start() throws Exception {
     ChannelInitializer<SocketChannel> tcpServerStringInitializer = (ChannelInitializer<SocketChannel>) ServerConfig
             .getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
     String channelType = ServerConfig.getInstance().getChannelType();
-    Integer port = ServerConfig.getInstance().getPort();
 
-    ServerConfig.getInstance().printServerInfo();
-    try {
-      acceptorChannel = ServerChannelFactory.createAcceptorChannel(channelType, tcpServerStringInitializer, port);
-      acceptorChannel.closeFuture().sync();
-    } catch (ServerErrException e) {
-      logger.debug("服务启动错误", e);
-    } catch (InterruptedException e) {
-      logger.debug("服务启动错误", e);
-    }
-
+    acceptorChannel = ServerChannelFactory.createAcceptorChannel(channelType, tcpServerStringInitializer);
+    acceptorChannel.closeFuture().sync();
   }
 
   @Override
