@@ -5,9 +5,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>JgServer</groupId>
-  <artifactId>JgServer</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>com.lizhaoblog</groupId>
+  <artifactId>base</artifactId>
+  <version>1.01</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -157,6 +157,8 @@
     </dependency>
 
   </dependencies>
+
+  <packaging>jar</packaging>
   <build>
     <plugins>
 
