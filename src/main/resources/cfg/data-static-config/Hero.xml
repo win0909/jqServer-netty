@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--Hero-->
+<Root>
+    <Hero id="1" roleId="1001" name="曹操" type="1" countryType="1" icon="ui://rgylkpibej3p9" />
+    <Hero id="2" roleId="1002" name="刘备" type="2" countryType="2" icon="ui://rgylkpibej3p8" />
+    <Hero id="3" roleId="1003" name="孙权" type="3" countryType="3" icon="ui://rgylkpibej3p5" />
+</Root>
