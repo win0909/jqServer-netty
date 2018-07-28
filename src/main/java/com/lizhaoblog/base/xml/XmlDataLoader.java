@@ -62,11 +62,11 @@ public class XmlDataLoader {
   /**
    * 清单文件的标签
    */
-  private String catalogMainNode = "/config/file";
+  private String catalogMainNode;
   /**
    * 清单文件的标签名称
    */
-  private String catalogAttribute = "name";
+  private String catalogAttribute;
 
   /**
    * xml文件对应的路径
@@ -75,11 +75,46 @@ public class XmlDataLoader {
 
   private static final String POSTFIX_XML = ".xml";
 
-//  public XmlDataLoader(String packageName, String catalogFile) {
-//    this.cfgPackageName = packageName;
-//    this.catalogFile = catalogFile;
-//  }
+  //  public XmlDataLoader(String packageName, String catalogFile) {
+  //    this.cfgPackageName = packageName;
+  //    this.catalogFile = catalogFile;
+  //  }
 
+  /**
+   * 假设我在resources/cfg目录中的dataConfig.xml列出了这个项目所有的配置数据
+   * ---文件的格式是,
+   * <config>
+   * <file name="Hero" />
+   * <file name="BBBBB" />
+   * </config>
+   * /config/file标签对应的类名为name标签---》resources/cfg目录的data-static-config目录下有标签对应的xml
+   * ---文件的格式是,会是一个数组，内部是Hero数据
+   * <Root>
+   * <Hero id="1" roleId="1001" name="曹操" type="1" countryType="1" icon="ui://rgylkpibej3p9" />
+   * <Hero id="2" roleId="1002" name="刘备" type="2" countryType="2" icon="ui://rgylkpibej3p8" />
+   * <Hero id="3" roleId="1003" name="孙权" type="3" countryType="3" icon="ui://rgylkpibej3p5" />
+   * </Root>
+   * <p>
+   * 这个xml对应的类在com.lizhaoblog.server.biz.entity.cfg.中，因为是一个数组，所以我们是需要一个数组类来接收
+   * 前缀就是ConfigDataArrCfg
+   * <p>
+   * 在上述的流程中依次出现的是
+   * String catalogDir = "/cfg/";
+   * String catalogFile = "dataConfig.xml";
+   * String catalogMainNode = "/config/file";
+   * String catalogAttribute = "name";
+   * String xmlFileDir = "/cfg/data-static-config/";
+   * String cfgPackageName = "com.lizhaoblog.server.biz.entity.cfg.";
+   * String cfgPrefix = "ConfigDataArrCfg";
+   *
+   * @param cfgPackageName   转换出来的类所在的包名
+   * @param cfgPrefix        转换出来类的前缀
+   * @param catalogDir       所有配置的清单文件 所在的文件夹
+   * @param catalogFile      所有配置的清单文件
+   * @param catalogMainNode  清单文件的标签
+   * @param catalogAttribute 清单文件的标签名称
+   * @param xmlFileDir       xml文件对应的路径
+   */
   public XmlDataLoader(String cfgPackageName, String cfgPrefix, String catalogDir, String catalogFile,
           String catalogMainNode, String catalogAttribute, String xmlFileDir) {
     this.cfgPackageName = cfgPackageName;

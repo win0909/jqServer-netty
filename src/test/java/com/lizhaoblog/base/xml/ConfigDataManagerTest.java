@@ -29,7 +29,15 @@ public class ConfigDataManagerTest {
 
   @Test
   public void testLoadXml() throws XmlConfigReadException {
-    ConfigDataManager.getInstance().loadXml();
+    String cfgPackageName = "com.lizhaoblog.server.biz.entity.cfg.";
+    String cfgPrefix = "ConfigDataArrCfg";
+    String catalogDir = "/cfg/";
+    String catalogFile = "dataConfig.xml";
+    String catalogMainNode = "/config/file";
+    String catalogAttribute = "name";
+    String xmlFileDir = "/cfg/data-static-config/";
+    ConfigDataManager.getInstance()
+            .loadXml(cfgPackageName, cfgPrefix, catalogDir, catalogFile, catalogMainNode, catalogAttribute, xmlFileDir);
     Map<String, List<?>> configDataMap = ConfigDataManager.getInstance().getConfigDataMap();
   }
 
