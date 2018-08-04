@@ -89,11 +89,25 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
   3. etc--sql--jg_server.sql：数据库脚本
 
 #### 安装教程
-  1. 编译器中打开
-  2. 按照自己的需要修改配置文件(上条)
-  3. 运行com.lizhaoblog.Main函数
-  4. 测试：运行com.lizhaoblog.server.channel.NettyClientTest的对应方法
-  
+  1. 在编译器中直接运行com.lizhaoblog.Main
+      1. 编译器中打开
+      2. 按照自己的需要修改配置文件(上条)
+      3. 运行com.lizhaoblog.Main函数
+      4. 测试：运行com.lizhaoblog.server.channel.NettyClientTest的对应方法
+      - 这时候pom.xml文件中的build--resources--resource标签下的filtering/targetPath，将targetPath行注释掉
+            
+  2. jar启动
+  	  1. 打包
+          -	使用maven打包，然后使用命令行的方式运行，这里包括把资源配置打到一个jar包和 将资源配置单独打包出来的方式
+          -	控制的开关是pom.xml文件中的build--resources--resource标签下的filtering/targetPath
+          -	如果想要将资源文件打包到一个jar包中的话，就把targetPath注释掉
+          -	反之则打开targetPath，注释掉filtering
+  	  2. 运行
+          -	使用 "java -jar xxx.jar"方式启动
+          - original-all-in-one-1.0-SNAPSHOT.jar	这个是只有我们的项目，需要依赖同级目录下的lib
+          - all-in-one-1.0-SNAPSHOT.jar		这个是包括lib在内的
+
+   
 #### 详细说明
 
 1. 同步更新，地址：Java游戏服务器开发，https://blog.csdn.net/cmqwan/article/details/80858272
