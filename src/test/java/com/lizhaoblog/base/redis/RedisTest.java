@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.JedisPoolConfig;
+
 /**
  * 〈一句话功能简述〉<br>
  * 〈Redis的测试类〉
@@ -33,7 +35,30 @@ public class RedisTest {
 
   @Test
   public void test() {
+    String host = "127.0.0.1";
+    int port = 6379;
+    int timeout = 2000;
+    String password = "admin123";
+    int databaseIndex = 16;
+    logger.info("Redis at {}:{}", host, port);
+
+    JedisPoolConfig poolConfig = new JedisPoolConfig();
+    //设置最大连接数（100个足够用了，没必要设置太大）
+    poolConfig.setMaxTotal(100);
+    //最大空闲连接数
+    poolConfig.setMaxIdle(10);
+    //获取Jedis连接的最大等待时间（50秒）
+    poolConfig.setMaxWaitMillis(50 * 1000);
+    //在获取Jedis连接时，自动检验连接是否可用
+    poolConfig.setTestOnBorrow(false);
+    //在将连接放回池中前，自动检验连接是否有效
+    poolConfig.setTestOnReturn(true);
+    //自动测试池中的空闲连接是否都是可用连接
+    poolConfig.setTestWhileIdle(true);
+
     Redis redis = Redis.getInstance();
+    redis.createJedisPool(poolConfig, host, port, timeout, password, databaseIndex);
+
     /** redis save **/
     logger.info("=============redis save==============");
     // string save

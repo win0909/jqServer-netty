@@ -11,6 +11,7 @@
 package com.lizhaoblog.base.redis;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -35,58 +36,38 @@ import redis.clients.jedis.Tuple;
 /**
  * 〈一句话功能简述〉<br>
  * 〈Redis工具,从<<Java游戏服务器开发>>一书中获取〉
- *  <具体简单入门可以查看：https://blog.csdn.net/cmqwan/article/details/81481522>
+ * <具体简单入门可以查看：https://blog.csdn.net/cmqwan/article/details/81481522>
+ *
  * @author zhao
  * @date 2018/8/4 10:30
  * @since 1.0.1
  */
 public class Redis {
   private static Redis instance;
-  private static Logger logger = LoggerFactory.getLogger(Redis.class);
+  private static final Logger logger = LoggerFactory.getLogger(Redis.class);
 
-  private JedisPool pool;
+  private JedisPool pool = null;
 
   public static Redis getInstance() {
     if (instance == null) {
       instance = new Redis();
-      instance.init();
     }
     return instance;
   }
 
-  public void init() {
-    //    ApplicationContext applicationContext = ServerConfig.getInstance().getApplicationContext();
-    ApplicationContext applicationContext = null;
-    if (applicationContext != null && applicationContext.getBean("jedisPool") != null) {
-      pool = (JedisPool) applicationContext.getBean("jedisPool");
-    } else {
-      String host = "127.0.0.1";
-      int port = 6379;
-      int timeout = 2000;
-      String password = "admin123";
-      int databaseIndex = 2;
-      logger.info("Redis at {}:{}", host, port);
-      //    pool = new JedisPool(host, port);
-      //    pool.
-
-      JedisPoolConfig config = new JedisPoolConfig();
-      //设置最大连接数（100个足够用了，没必要设置太大）
-      config.setMaxTotal(100);
-      //最大空闲连接数
-      config.setMaxIdle(10);
-      //获取Jedis连接的最大等待时间（50秒）
-      config.setMaxWaitMillis(50 * 1000);
-      //在获取Jedis连接时，自动检验连接是否可用
-      config.setTestOnBorrow(false);
-      //在将连接放回池中前，自动检验连接是否有效
-      config.setTestOnReturn(true);
-      //自动测试池中的空闲连接是否都是可用连接
-      config.setTestWhileIdle(true);
-      //创建连接池
-      //    pool = new JedisPool(config, PropKit.use(configFile).get("redisURL"),
-      //            PropKit.use(configFile).getInt("redisPort"));
-      pool = new JedisPool(config, host, port, timeout, password, databaseIndex);
-    }
+  /**
+   * 创建一个redis连接池
+   *
+   * @param poolConfig    连接池设置
+   * @param host          主机
+   * @param port          端口
+   * @param timeout       超时
+   * @param password      密码
+   * @param databaseIndex 数据库
+   */
+  public void createJedisPool(final GenericObjectPoolConfig poolConfig, final String host, int port, int timeout,
+          final String password, final int databaseIndex) {
+    pool = new JedisPool(poolConfig, host, port, timeout, password, databaseIndex);
   }
 
   /**
@@ -97,23 +78,16 @@ public class Redis {
   public synchronized Jedis getJedis() {
     Jedis jedis = null;
     if (pool != null) {
-      try {
-        if (jedis == null) {
+      if (jedis == null) {
+        try {
           jedis = pool.getResource();
+        } catch (Exception e) {
+          logger.debug("Jedis getJedis find error", e);
         }
-      } catch (Exception e) {
-        logger.error(e.getMessage(), e);
       }
     }
     return jedis;
   }
-
-  //  public void select(int index) {
-  //    Jedis jedis = pool.getResource();
-  //    jedis.auth(password);
-  //    jedis.select(index);
-  //    jedis.close();
-  //  }
 
   public Map<String, String> hgetAll(String key) {
     if (key == null) {
@@ -337,7 +311,7 @@ public class Redis {
    * @param key
    * @return
    * @Title: zcard
-   * @Description:
+   
    */
   public long scard(String key) {
     Jedis jedis = getJedis();
@@ -359,7 +333,7 @@ public class Redis {
    * @param key
    * @param id
    * @Title: lpush
-   * @Description:
+   
    */
   public void lpush(String key, String id) {
     Jedis jedis = getJedis();
@@ -381,7 +355,7 @@ public class Redis {
    * @param end
    * @return
    * @Title: lrange
-   * @Description:
+   
    */
   public List<String> lrange(String key, int start, int end) {
     Jedis jedis = getJedis();
@@ -460,7 +434,7 @@ public class Redis {
    * @param key
    * @return
    * @Title: exist
-   * @Description:
+   
    */
   public boolean exist(String key) {
     Jedis jedis = getJedis();
@@ -538,7 +512,7 @@ public class Redis {
    * @param member
    * @return 设置为名次从1开始。返回为-1，表示member无记录
    * @Title: zrank
-   * @Description:
+   
    */
   public long zrank(String key, String member) {
     Jedis jedis = getJedis();
@@ -562,7 +536,7 @@ public class Redis {
    * @return 返回有序集 key 中，成员 member 的 score 值 如果 member 元素不是有序集 key 的成员，或 key
    * 不存在，返回 null 。
    * @Title: zscore
-   * @Description:
+   
    */
   public int zscoreDouble(String key, String member) {
     Jedis jedis = getJedis();
@@ -586,7 +560,7 @@ public class Redis {
    * @param max
    * @return
    * @Title: zrangebyscore
-   * @Description:
+   
    */
   // add 20141216
   public Set<String> zrangebyscore(String key, long min, long max) {
@@ -612,7 +586,7 @@ public class Redis {
    * @param max
    * @return
    * @Title: zrangebyscorewithscores
-   * @Description:
+   
    */
   public Set<Tuple> zrangebyscorewithscores(String key, long min, long max) {
     Jedis jedis = getJedis();
@@ -634,8 +608,8 @@ public class Redis {
    * @param start ： （排名）0表示第一个元素，-x：表示倒数第x个元素
    * @param end   ： （排名）-1表示最后一个元素（最大值）
    * @return 返回 排名在start 、end之间带score元素
-   * @Title: zrangeWithScores
-   * @Description:
+   
+   
    */
   public Map<String, Double> zrevrangeWithScores(String key, long start, long end) {
     Jedis jedis = getJedis();
@@ -651,10 +625,8 @@ public class Redis {
   }
 
   /**
-   * @param tupleSet
-   * @return Map<String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Double> ： 返回的是 有序<element, score>
-   * @Title: tupleToMap
-   * @Description:
+   * @param tupleSet  一个set
+   * @return Map<String<element, score>
    */
   public Map<String, Double> tupleToMap(Set<Tuple> tupleSet) {
     if (tupleSet == null) {
@@ -670,10 +642,9 @@ public class Redis {
   /**
    * 删除key中的member
    *
-   * @param key //   * @param member
-   * @return
-   * @Title: zrem
-   * @Description:
+   * @param key 键
+   * @param member  值
+   * @return  结果
    */
   public long zrem(String key, String member) {
     Jedis jedis = getJedis();
@@ -691,13 +662,13 @@ public class Redis {
   /**
    * 从高到低排名，返回前 num 个score和member
    *
-   * @param key
-   * @param num
-   * @return
+   * @param key 根据某个key
+   * @param num 前面第n个
+   * @return  返回一个set
    */
   public Set<Tuple> ztopWithScore(String key, int num) {
     if (num <= 0) {
-      return null;
+      return Collections.emptySet();
     }
     Jedis jedis = getJedis();
     Set<Tuple> ret = jedis.zrevrangeWithScores(key, 0, num - 1);
@@ -708,10 +679,10 @@ public class Redis {
   /**
    * 返回score区间的member
    *
-   * @param key
-   * @param max
-   * @param min
-   * @return
+   * @param key 键
+   * @param max 最大值
+   * @param min 最小值
+   * @return  一个区间set
    */
   public Set<String> zrankByScore(String key, int max, int min) {
     Jedis jedis = getJedis();
@@ -723,13 +694,13 @@ public class Redis {
   /**
    * 从高到低排名，返回前 num 个
    *
-   * @param key
-   * @param num
-   * @return
+   * @param key 键
+   * @param num 数量
+   * @return  Set
    */
   public Set<String> ztop(String key, int num) {
     if (num <= 0) {
-      return null;
+      return Collections.emptySet();
     }
     Jedis jedis = getJedis();
     Set<String> ret = jedis.zrevrange(key, 0, num - 1);
