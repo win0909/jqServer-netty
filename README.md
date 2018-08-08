@@ -25,15 +25,19 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
     │  │  │  │      │  │  ├─dictionary
     │  │  │  │      │  │  └─handler
     │  │  │  │      │  ├─constant								常量
+    │  │  │  │      │  ├─event								    事件
     │  │  │  │      │  ├─exception								异常	
     │  │  │  │      │  ├─factory								工厂
+    │  │  │  │      │  ├─message								消息
     │  │  │  │      │  ├─mybatis								数据库工具
     │  │  │  │      │  ├─network								网络相关	
     │  │  │  │      │  │  ├─customer							网络消费者
     │  │  │  │      │  │  ├─listener							网络监听器
     │  │  │  │      │  │  └─processor							线程处理器
+    │  │  │  │      │  ├─redis								  redis内存数据库	
     │  │  │  │      │  ├─session								会话管理	
-    │  │  │  │      │  └─util									工具类
+    │  │  │  │      │  ├─util									工具类
+    │  │  │  │      │  └─xml									xml配置文件
     │  │  │  │      ├─demopro									测试代码
     │  │  │  │      │  └─net
     │  │  │  │      └─server									主包
@@ -43,7 +47,10 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
     │  │  │  │          │  │  └─mysql
     │  │  │  │          │  ├─dictionary							消息字典
     │  │  │  │          │  ├─entity								实体类	
+    │  │  │  │          │  │  └─cfg             xml配置文件对应的实体类
+    │  │  │  │          │  ├─event							具体的事件类
     │  │  │  │          │  ├─handler							控制器
+    │  │  │  │          │  └─scheduled							定时任务
     │  │  │  │          │  └─services							业务处理器
     │  │  │  │          │      └─impl
     │  │  │  │          ├─channel								各种协议存放
@@ -60,6 +67,8 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
     │  │  │              └─builder
     │  │  │                  └─annotation						重写mybatis中的
     │  │  └─resources											资源文件
+    │  │      ├─cfg                     cfg的配置文件
+    │  │      │  └─data-static-config  cfg的实体类
     │  │      ├─mybatis
     │  │      │  └─jpa
     │  │      ├─properties										
