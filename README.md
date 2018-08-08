@@ -96,6 +96,9 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
   1. db-config-dev.properties：数据库配置文件
   2. server-config-dev.properties：服务器属性
   3. etc--sql--jg_server.sql：数据库脚本
+  4. redis-config-dev.properties：redis数据库属性
+  5. xml-cfg-config-dev.properties：xml-cfg配置属性
+
 
 #### 安装教程
   1. 在编译器中直接运行com.lizhaoblog.Main
