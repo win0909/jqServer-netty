@@ -10,6 +10,8 @@
  */
 package com.lizhaoblog.base.redis;
 
+import com.lizhaoblog.base.exception.RedisException;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
@@ -87,6 +89,20 @@ public class Redis {
       }
     }
     return jedis;
+  }
+
+  public void testConnection() throws RedisException {
+    Jedis jedis = null;
+    if (pool != null) {
+      if (jedis == null) {
+        try {
+          jedis = pool.getResource();
+        } catch (Exception e) {
+          throw new RedisException("pool.getResource() find error");
+        }
+      }
+    }
+    jedis.close();
   }
 
   public Map<String, String> hgetAll(String key) {
@@ -311,7 +327,6 @@ public class Redis {
    * @param key
    * @return
    * @Title: zcard
-   
    */
   public long scard(String key) {
     Jedis jedis = getJedis();
@@ -333,7 +348,6 @@ public class Redis {
    * @param key
    * @param id
    * @Title: lpush
-   
    */
   public void lpush(String key, String id) {
     Jedis jedis = getJedis();
@@ -355,7 +369,6 @@ public class Redis {
    * @param end
    * @return
    * @Title: lrange
-   
    */
   public List<String> lrange(String key, int start, int end) {
     Jedis jedis = getJedis();
@@ -434,7 +447,6 @@ public class Redis {
    * @param key
    * @return
    * @Title: exist
-   
    */
   public boolean exist(String key) {
     Jedis jedis = getJedis();
@@ -512,7 +524,6 @@ public class Redis {
    * @param member
    * @return 设置为名次从1开始。返回为-1，表示member无记录
    * @Title: zrank
-   
    */
   public long zrank(String key, String member) {
     Jedis jedis = getJedis();
@@ -536,7 +547,6 @@ public class Redis {
    * @return 返回有序集 key 中，成员 member 的 score 值 如果 member 元素不是有序集 key 的成员，或 key
    * 不存在，返回 null 。
    * @Title: zscore
-   
    */
   public int zscoreDouble(String key, String member) {
     Jedis jedis = getJedis();
@@ -560,7 +570,6 @@ public class Redis {
    * @param max
    * @return
    * @Title: zrangebyscore
-   
    */
   // add 20141216
   public Set<String> zrangebyscore(String key, long min, long max) {
@@ -586,7 +595,6 @@ public class Redis {
    * @param max
    * @return
    * @Title: zrangebyscorewithscores
-   
    */
   public Set<Tuple> zrangebyscorewithscores(String key, long min, long max) {
     Jedis jedis = getJedis();
@@ -608,8 +616,6 @@ public class Redis {
    * @param start ： （排名）0表示第一个元素，-x：表示倒数第x个元素
    * @param end   ： （排名）-1表示最后一个元素（最大值）
    * @return 返回 排名在start 、end之间带score元素
-   
-   
    */
   public Map<String, Double> zrevrangeWithScores(String key, long start, long end) {
     Jedis jedis = getJedis();
@@ -625,8 +631,8 @@ public class Redis {
   }
 
   /**
-   * @param tupleSet  一个set
-   * @return Map<String<element, score>
+   * @param tupleSet 一个set
+   * @return Map<String               <               element               ,                               score>
    */
   public Map<String, Double> tupleToMap(Set<Tuple> tupleSet) {
     if (tupleSet == null) {
@@ -642,9 +648,9 @@ public class Redis {
   /**
    * 删除key中的member
    *
-   * @param key 键
-   * @param member  值
-   * @return  结果
+   * @param key    键
+   * @param member 值
+   * @return 结果
    */
   public long zrem(String key, String member) {
     Jedis jedis = getJedis();
@@ -664,7 +670,7 @@ public class Redis {
    *
    * @param key 根据某个key
    * @param num 前面第n个
-   * @return  返回一个set
+   * @return 返回一个set
    */
   public Set<Tuple> ztopWithScore(String key, int num) {
     if (num <= 0) {
@@ -682,7 +688,7 @@ public class Redis {
    * @param key 键
    * @param max 最大值
    * @param min 最小值
-   * @return  一个区间set
+   * @return 一个区间set
    */
   public Set<String> zrankByScore(String key, int max, int min) {
     Jedis jedis = getJedis();
@@ -696,7 +702,7 @@ public class Redis {
    *
    * @param key 键
    * @param num 数量
-   * @return  Set
+   * @return Set
    */
   public Set<String> ztop(String key, int num) {
     if (num <= 0) {

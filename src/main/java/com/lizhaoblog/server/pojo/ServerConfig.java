@@ -41,6 +41,47 @@ public class ServerConfig {
   @Value("#{cfgProps['messageType']}")
   private String messageType;
 
+  // xml cfg
+  @Value("#{cfgProps['xml.cfg.cfgPackageName']}")
+  private String cfgPackageName;
+  @Value("#{cfgProps['xml.cfg.cfgPrefix']}")
+  private String cfgPrefix;
+  @Value("#{cfgProps['xml.cfg.catalogDir']}")
+  private String catalogDir;
+  @Value("#{cfgProps['xml.cfg.catalogFile']}")
+  private String catalogFile;
+  @Value("#{cfgProps['xml.cfg.catalogMainNode']}")
+  private String catalogMainNode;
+  @Value("#{cfgProps['xml.cfg.catalogAttribute']}")
+  private String catalogAttribute;
+  @Value("#{cfgProps['xml.cfg.xmlFileDir']}")
+  private String xmlFileDir;
+
+  // Redis config
+  @Value("#{cfgProps['redis.host']}")
+  private String redisHost;
+  @Value("#{cfgProps['redis.port']}")
+  private Integer redisPort;
+  @Value("#{cfgProps['redis.timeout']}")
+  private Integer redisTimeout;
+  @Value("#{cfgProps['redis.password']}")
+  private String redisPassword;
+  @Value("#{cfgProps['redis.databaseIndex']}")
+  private Integer redisDatabaseIndex;
+
+  @Value("#{cfgProps['redis.poolConfig.maxTotal']}")
+  private Integer redisPoolConfigMaxTotal;
+  @Value("#{cfgProps['redis.poolConfig.MaxIdle']}")
+  private Integer redisPoolConfigMaxIdle;
+  @Value("#{cfgProps['redis.poolConfig.MaxWaitMillis']}")
+  private Long redisPoolConfigMaxWaitMillis;
+  @Value("#{cfgProps['redis.poolConfig.testOnBorrow']}")
+  private Boolean redisPoolConfigTestOnBorrow;
+  @Value("#{cfgProps['redis.poolConfig.testOnReturn']}")
+  private Boolean redisPoolConfigTestOnReturn;
+  @Value("#{cfgProps['redis.poolConfig.testWhileIdle']}")
+  private Boolean redisPoolConfigTestWhileIdle;
+
   private ApplicationContext applicationContext;
 
   private static ServerConfig instance = null;
@@ -69,7 +110,35 @@ public class ServerConfig {
     logger.info("messageType   : " + messageType);
     logger.info("**************Server INFO******************");
   }
+  public void printXmlCfgInfo() {
+    logger.info("**************Xml Cfg INFO******************");
+    logger.info("cfgPackageName     : " + cfgPackageName);
+    logger.info("cfgPrefix          : " + cfgPrefix);
+    logger.info("catalogDir         : " + catalogDir);
+    logger.info("catalogFile        : " + catalogFile);
+    logger.info("catalogMainNode    : " + catalogMainNode);
+    logger.info("catalogAttribute   : " + catalogAttribute);
+    logger.info("xmlFileDir         : " + xmlFileDir);
+    logger.info("**************Xml Cfg INFO******************");
+  }
+  // Redis config
+  public void printRedisInfo() {
+    logger.info("**************Redis INFO******************");
+    logger.info("redisHost                      : " + redisHost);
+    logger.info("redisPort                      : " + redisPort);
+    logger.info("redisTimeout                   : " + redisTimeout);
+    logger.info("redisPassword                  : " + redisPassword);
+    logger.info("redisDatabaseIndex             : " + redisDatabaseIndex);
+    logger.info("redisPoolConfigMaxTotal        : " + redisPoolConfigMaxTotal);
+    logger.info("redisPoolConfigMaxIdle         : " + redisPoolConfigMaxIdle);
+    logger.info("redisPoolConfigMaxWaitMillis   : " + redisPoolConfigMaxWaitMillis);
+    logger.info("redisPoolConfigTestOnBorrow    : " + redisPoolConfigTestOnBorrow);
+    logger.info("redisPoolConfigTestOnReturn    : " + redisPoolConfigTestOnReturn);
+    logger.info("redisPoolConfigTestWhileIdle   : " + redisPoolConfigTestWhileIdle);
+    logger.info("**************Redis INFO******************");
+  }
 
+  //region Get And Set Method
   public Integer getPort() {
     return port;
   }
@@ -109,4 +178,149 @@ public class ServerConfig {
   public void setApplicationContext(ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
   }
+
+  public String getCfgPackageName() {
+    return cfgPackageName;
+  }
+
+  public void setCfgPackageName(String cfgPackageName) {
+    this.cfgPackageName = cfgPackageName;
+  }
+
+  public String getCfgPrefix() {
+    return cfgPrefix;
+  }
+
+  public void setCfgPrefix(String cfgPrefix) {
+    this.cfgPrefix = cfgPrefix;
+  }
+
+  public String getCatalogDir() {
+    return catalogDir;
+  }
+
+  public void setCatalogDir(String catalogDir) {
+    this.catalogDir = catalogDir;
+  }
+
+  public String getCatalogFile() {
+    return catalogFile;
+  }
+
+  public void setCatalogFile(String catalogFile) {
+    this.catalogFile = catalogFile;
+  }
+
+  public String getCatalogMainNode() {
+    return catalogMainNode;
+  }
+
+  public void setCatalogMainNode(String catalogMainNode) {
+    this.catalogMainNode = catalogMainNode;
+  }
+
+  public String getCatalogAttribute() {
+    return catalogAttribute;
+  }
+
+  public void setCatalogAttribute(String catalogAttribute) {
+    this.catalogAttribute = catalogAttribute;
+  }
+
+  public String getXmlFileDir() {
+    return xmlFileDir;
+  }
+
+  public void setXmlFileDir(String xmlFileDir) {
+    this.xmlFileDir = xmlFileDir;
+  }
+
+  public String getRedisHost() {
+    return redisHost;
+  }
+
+  public void setRedisHost(String redisHost) {
+    this.redisHost = redisHost;
+  }
+
+  public Integer getRedisPort() {
+    return redisPort;
+  }
+
+  public void setRedisPort(Integer redisPort) {
+    this.redisPort = redisPort;
+  }
+
+  public Integer getRedisTimeout() {
+    return redisTimeout;
+  }
+
+  public void setRedisTimeout(Integer redisTimeout) {
+    this.redisTimeout = redisTimeout;
+  }
+
+  public String getRedisPassword() {
+    return redisPassword;
+  }
+
+  public void setRedisPassword(String redisPassword) {
+    this.redisPassword = redisPassword;
+  }
+
+  public Integer getRedisDatabaseIndex() {
+    return redisDatabaseIndex;
+  }
+
+  public void setRedisDatabaseIndex(Integer redisDatabaseIndex) {
+    this.redisDatabaseIndex = redisDatabaseIndex;
+  }
+
+  public Integer getRedisPoolConfigMaxTotal() {
+    return redisPoolConfigMaxTotal;
+  }
+
+  public void setRedisPoolConfigMaxTotal(Integer redisPoolConfigMaxTotal) {
+    this.redisPoolConfigMaxTotal = redisPoolConfigMaxTotal;
+  }
+
+  public Integer getRedisPoolConfigMaxIdle() {
+    return redisPoolConfigMaxIdle;
+  }
+
+  public void setRedisPoolConfigMaxIdle(Integer redisPoolConfigMaxIdle) {
+    this.redisPoolConfigMaxIdle = redisPoolConfigMaxIdle;
+  }
+
+  public Long getRedisPoolConfigMaxWaitMillis() {
+    return redisPoolConfigMaxWaitMillis;
+  }
+
+  public void setRedisPoolConfigMaxWaitMillis(Long redisPoolConfigMaxWaitMillis) {
+    this.redisPoolConfigMaxWaitMillis = redisPoolConfigMaxWaitMillis;
+  }
+
+  public Boolean getRedisPoolConfigTestOnBorrow() {
+    return redisPoolConfigTestOnBorrow;
+  }
+
+  public void setRedisPoolConfigTestOnBorrow(Boolean redisPoolConfigTestOnBorrow) {
+    this.redisPoolConfigTestOnBorrow = redisPoolConfigTestOnBorrow;
+  }
+
+  public Boolean getRedisPoolConfigTestOnReturn() {
+    return redisPoolConfigTestOnReturn;
+  }
+
+  public void setRedisPoolConfigTestOnReturn(Boolean redisPoolConfigTestOnReturn) {
+    this.redisPoolConfigTestOnReturn = redisPoolConfigTestOnReturn;
+  }
+
+  public Boolean getRedisPoolConfigTestWhileIdle() {
+    return redisPoolConfigTestWhileIdle;
+  }
+
+  public void setRedisPoolConfigTestWhileIdle(Boolean redisPoolConfigTestWhileIdle) {
+    this.redisPoolConfigTestWhileIdle = redisPoolConfigTestWhileIdle;
+  }
+  //endregion
 }

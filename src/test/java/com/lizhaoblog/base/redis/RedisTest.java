@@ -39,7 +39,7 @@ public class RedisTest {
     int port = 6379;
     int timeout = 2000;
     String password = "admin123";
-    int databaseIndex = 16;
+    int databaseIndex = 0;
     logger.info("Redis at {}:{}", host, port);
 
     JedisPoolConfig poolConfig = new JedisPoolConfig();

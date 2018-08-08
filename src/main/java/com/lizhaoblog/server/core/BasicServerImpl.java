@@ -10,9 +10,13 @@
  */
 package com.lizhaoblog.server.core;
 
+import com.lizhaoblog.base.exception.RedisException;
 import com.lizhaoblog.base.exception.ServerErrException;
+import com.lizhaoblog.base.exception.XmlConfigReadException;
 import com.lizhaoblog.base.factory.ServerChannelFactory;
 import com.lizhaoblog.base.network.IServer;
+import com.lizhaoblog.base.redis.Redis;
+import com.lizhaoblog.base.xml.ConfigDataManager;
 import com.lizhaoblog.server.core.listener.NetworkListener;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
@@ -24,6 +28,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -40,23 +45,64 @@ public class BasicServerImpl implements IServer {
 
   @Override
   public void start() {
-    Integer port = ServerConfig.getInstance().getPort();
-    String channelType = ServerConfig.getInstance().getChannelType();
-    ChannelInitializer<SocketChannel> tcpServerStringInitializer = (ChannelInitializer<SocketChannel>) ServerConfig
-            .getInstance().getApplicationContext().getBean("tcpServerStringInitializer");
-
     try {
-      acceptorChannel = ServerChannelFactory.createAcceptorChannel(port, channelType, tcpServerStringInitializer);
+      init();
       ServerConfig.getInstance().printServerInfo();
-
       acceptorChannel.closeFuture().sync();
-    } catch (ServerErrException | InterruptedException e) {
-      logger.debug("服务启动失败", e);
+    } catch (XmlConfigReadException | RedisException | ServerErrException | InterruptedException e) {
+      logger.debug("服务启动失败，程序即将退出", e);
+      stop();
+      System.exit(0);
     }
   }
 
+  private void init() throws XmlConfigReadException, ServerErrException, RedisException {
+    ServerConfig serverConfig = ServerConfig.getInstance();
+
+    // 初始化xml-cfg工具类
+    logger.info("初始化xml-cfg工具类  开始");
+    serverConfig.printXmlCfgInfo();
+    ConfigDataManager.getInstance()
+            .loadXml(serverConfig.getCfgPackageName(), serverConfig.getCfgPrefix(), serverConfig.getCatalogDir(),
+                    serverConfig.getCatalogFile(), serverConfig.getCatalogMainNode(),
+                    serverConfig.getCatalogAttribute(), serverConfig.getXmlFileDir());
+    logger.info("初始化xml-cfg工具类  结束");
+
+    // 初始化redis工具类
+    logger.info("redis工具类  开始");
+    serverConfig.printRedisInfo();
+    JedisPoolConfig poolConfig = new JedisPoolConfig();
+    //设置最大连接数（100个足够用了，没必要设置太大）
+    poolConfig.setMaxTotal(serverConfig.getRedisPoolConfigMaxTotal());
+    //最大空闲连接数
+    poolConfig.setMaxIdle(serverConfig.getRedisPoolConfigMaxIdle());
+    //获取Jedis连接的最大等待时间（50秒）
+    poolConfig.setMaxWaitMillis(serverConfig.getRedisPoolConfigMaxWaitMillis());
+    //在获取Jedis连接时，自动检验连接是否可用
+    poolConfig.setTestOnBorrow(serverConfig.getRedisPoolConfigTestOnBorrow());
+    //在将连接放回池中前，自动检验连接是否有效
+    poolConfig.setTestOnReturn(serverConfig.getRedisPoolConfigTestOnReturn());
+    //自动测试池中的空闲连接是否都是可用连接
+    poolConfig.setTestWhileIdle(serverConfig.getRedisPoolConfigTestWhileIdle());
+    Redis.getInstance().createJedisPool(poolConfig, serverConfig.getRedisHost(), serverConfig.getRedisPort(),
+            serverConfig.getRedisTimeout(), serverConfig.getRedisPassword(), serverConfig.getRedisDatabaseIndex());
+    // 测试线程池是否已经建立完毕
+    Redis.getInstance().testConnection();
+    logger.info("redis工具类  结束");
+
+    // 启动通讯服务
+    logger.info("启动通讯服务  开始");
+    Integer port = serverConfig.getPort();
+    String channelType = serverConfig.getChannelType();
+    ChannelInitializer<SocketChannel> tcpServerStringInitializer = (ChannelInitializer<SocketChannel>) serverConfig
+            .getApplicationContext().getBean("tcpServerStringInitializer");
+    acceptorChannel = ServerChannelFactory.createAcceptorChannel(port, channelType, tcpServerStringInitializer);
+    logger.info("启动通讯服务  结束");
+
+  }
+
   @Override
-  public void stop() throws Exception {
+  public void stop() {
     if (acceptorChannel != null) {
       acceptorChannel.close().addListener(ChannelFutureListener.CLOSE);
     }
