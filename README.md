@@ -123,7 +123,7 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
 #### 详细说明
 
 1. 同步更新，地址：Java游戏服务器开发，https://blog.csdn.net/cmqwan/article/details/80858272
-2. 可以加qq群一起探讨Java游戏服务器开发的相关知识	676231524
+2. 可以加qq群一起探讨Java游戏服务器开发的相关知识	676231564
 
 #### 参与贡献
 
