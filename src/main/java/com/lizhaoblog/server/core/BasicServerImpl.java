@@ -10,6 +10,7 @@
  */
 package com.lizhaoblog.server.core;
 
+import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.exception.RedisException;
 import com.lizhaoblog.base.exception.ServerErrException;
 import com.lizhaoblog.base.exception.XmlConfigReadException;
@@ -87,16 +88,28 @@ public class BasicServerImpl implements IServer {
     Redis.getInstance().createJedisPool(poolConfig, serverConfig.getRedisHost(), serverConfig.getRedisPort(),
             serverConfig.getRedisTimeout(), serverConfig.getRedisPassword(), serverConfig.getRedisDatabaseIndex());
     // 测试线程池是否已经建立完毕
-    Redis.getInstance().testConnection();
+//    Redis.getInstance().testConnection();
     logger.info("redis工具类  结束");
 
     // 启动通讯服务
     logger.info("启动通讯服务  开始");
     Integer port = serverConfig.getPort();
     String channelType = serverConfig.getChannelType();
-    ChannelInitializer<SocketChannel> tcpServerStringInitializer = (ChannelInitializer<SocketChannel>) serverConfig
-            .getApplicationContext().getBean("tcpServerStringInitializer");
-    acceptorChannel = ServerChannelFactory.createAcceptorChannel(port, channelType, tcpServerStringInitializer);
+    String protocolType = serverConfig.getProtocolType();
+    ChannelInitializer<SocketChannel> channelInitializer = null;
+    switch (protocolType) {
+      case ConstantValue.PROTOCOL_TYPE_TCP:
+        channelInitializer = (ChannelInitializer<SocketChannel>) serverConfig.getApplicationContext()
+                .getBean("tcpServerStringInitializer");
+        break;
+      case ConstantValue.PROTOCOL_TYPE_WEBSOCKET:
+        channelInitializer = (ChannelInitializer<SocketChannel>) serverConfig.getApplicationContext()
+                .getBean("webSocketChannelInitializer");
+        break;
+      default:
+        throw new ServerErrException("ChannelInitializer is not defind");
+    }
+    acceptorChannel = ServerChannelFactory.createAcceptorChannel(port, channelType, channelInitializer);
     logger.info("启动通讯服务  结束");
 
   }
