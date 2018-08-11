@@ -14,6 +14,9 @@ import com.lizhaoblog.base.exception.MessageCodecException;
 import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.message.impl.MessageFactory;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -29,7 +32,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 
   //判断传送客户端传送过来的数据是否按照协议传输，头部信息的大小应该是 int+int+int = 4+4+4 = 12
-  private static final int HEADER_SIZE = 12;
+  private static final int HEADER_SIZE = 8;
   private String messageType;
 
   /**
@@ -49,6 +52,10 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
           int initialBytesToStrip, boolean failFast, String messageType) {
     this(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast);
     this.messageType = messageType;
+  }
+
+  public IMessage decodePub(ChannelHandlerContext ctx, ByteBuf in) throws MessageCodecException {
+    return decode(ctx, in);
   }
 
   @Override
