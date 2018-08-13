@@ -14,9 +14,11 @@ import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.exception.MessageCodecException;
 import com.lizhaoblog.base.message.IMessage;
 import com.lizhaoblog.base.message.codec.MessageDecoder;
+import com.lizhaoblog.base.message.impl.ByteMessage;
 import com.lizhaoblog.base.message.impl.MessageFactory;
 import com.lizhaoblog.base.network.customer.INetworkConsumer;
 import com.lizhaoblog.base.network.listener.INetworkEventListener;
+import com.lizhaoblog.base.session.SessionManager;
 import com.lizhaoblog.base.util.HttpResponseUtil;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
@@ -60,6 +62,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
     } else if (msg instanceof WebSocketFrame) {
       // WebSocket接入
       handleWebSocketMessage(ctx, msg);
+    } else if (msg instanceof IMessage) {
+      // 这里已经通过WebSocketFrameToIMessageDecoder进行解码，获得我们设置好的IMessage类了
+      consumer.consume((IMessage) msg, ctx.channel());
+
+      ByteMessage byteMessage = new ByteMessage();
+      byteMessage.setMessageId(com.lizhaoblog.server.biz.constant.CommonValue.CM_MSG_TEST_BYTE);
+      byteMessage.setStatusCode(com.lizhaoblog.server.biz.constant.CommonValue.MSG_STATUS_CODE_SUCCESS);
+      byteMessage.addAttr(4);
+      SessionManager.getInstance()
+              .sendMessage(SessionManager.getInstance().getSessionByChannel(ctx.channel()), byteMessage);
     }
   }
 

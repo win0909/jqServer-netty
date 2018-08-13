@@ -11,8 +11,10 @@
 package com.lizhaoblog.server.channel.websocket;
 
 import com.lizhaoblog.base.constant.ConstantValue;
+import com.lizhaoblog.base.message.codec.IMessageToWebSocketFrameEncoder;
 import com.lizhaoblog.base.message.codec.MessageDecoder;
 import com.lizhaoblog.base.message.codec.MessageEncoder;
+import com.lizhaoblog.base.message.codec.WebSocketFrameToIMessageDecoder;
 import com.lizhaoblog.server.channel.tcp.str.TcpMessageStringHandler;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
@@ -43,11 +45,14 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
     pipeline.addLast("aggregator", new HttpObjectAggregator(65536)); // Http消息组装
     pipeline.addLast("http-chunked", new ChunkedWriteHandler()); // WebSocket通信支持
 
-//    pipeline.addLast("encoder", new MessageEncoder());
-//    pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
-//            ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
-//            ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP, false,
-//            ServerConfig.getInstance().getMessageType()));
+    //    pipeline.addLast("encoder", new MessageEncoder());
+    //    pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
+    //            ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
+    //            ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP, false,
+    //            ServerConfig.getInstance().getMessageType()));
+
+    pipeline.addLast("encoder", new IMessageToWebSocketFrameEncoder());
+    pipeline.addLast("decoder", new WebSocketFrameToIMessageDecoder());
 
     WebSocketHandler webSocketHandler = (WebSocketHandler) ServerConfig.getInstance().getApplicationContext()
             .getBean("webSocketHandler");

@@ -11,6 +11,7 @@
 package com.lizhaoblog.server.channel.websocket;
 
 import com.lizhaoblog.base.message.codec.IMessageToWebSocketFrameEncoder;
+import com.lizhaoblog.base.message.codec.WebSocketFrameToIMessageDecoder;
 import com.lizhaoblog.base.message.impl.ByteMessage;
 import com.lizhaoblog.common.CommonValue;
 
@@ -70,6 +71,7 @@ public class WebSocketClientTest {
         pipeline.addLast(new HttpClientCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast("encoder", new IMessageToWebSocketFrameEncoder());
+        pipeline.addLast("decoder", new WebSocketFrameToIMessageDecoder());
 
 //        pipeline.addLast("encoder", new MessageEncoder());
 //        pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
