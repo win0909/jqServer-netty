@@ -12,10 +12,13 @@ package com.lizhaoblog.server.channel;
 
 import com.lizhaoblog.server.channel.tcp.bytec.TcpByteClientTest;
 import com.lizhaoblog.server.channel.tcp.str.TcpStringClientTest;
+import com.lizhaoblog.server.channel.websocket.WebSocketClientTest;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.URISyntaxException;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -44,5 +47,10 @@ public class NettyClientTest {
     TcpByteClientTest tcpByteClientTest = new TcpByteClientTest();
     tcpByteClientTest.run();
   }
-
+  @Test
+  public void testWebSocketByteClient() throws InterruptedException, URISyntaxException {
+    ServerConfig.getInstance().setMessageType("BYTE");
+    WebSocketClientTest webSocketClientTest = new WebSocketClientTest();
+    webSocketClientTest.run();
+  }
 }
