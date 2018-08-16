@@ -10,21 +10,22 @@
  */
 package com.lizhaoblog.server.channel.websocket;
 
-import com.lizhaoblog.base.constant.ConstantValue;
 import com.lizhaoblog.base.message.codec.IMessageToWebSocketFrameEncoder;
-import com.lizhaoblog.base.message.codec.MessageDecoder;
-import com.lizhaoblog.base.message.codec.MessageEncoder;
 import com.lizhaoblog.base.message.codec.WebSocketFrameToIMessageDecoder;
-import com.lizhaoblog.server.channel.tcp.str.TcpMessageStringHandler;
+import com.lizhaoblog.base.util.SslUtil;
 import com.lizhaoblog.server.pojo.ServerConfig;
 
 import org.springframework.stereotype.Component;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
@@ -39,18 +40,20 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 public class WebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
 
   @Override
-  protected void initChannel(SocketChannel ch) {
+  protected void initChannel(SocketChannel ch) throws Exception {
     ChannelPipeline pipeline = ch.pipeline();
+
+//    SSLContext sslContext = SslUtil.createSSLContext("JKS","D:\\workdir\\doc\\jks\\wss.jks","netty123");
+//    //SSLEngine 此类允许使用ssl安全套接层协议进行安全通信
+//    SSLEngine engine = sslContext.createSSLEngine();
+//    engine.setUseClientMode(false);
+//
+//    ch.pipeline().addLast(new SslHandler(engine));
+
     pipeline.addLast("http-codec", new HttpServerCodec()); // Http消息编码解码
     pipeline.addLast("aggregator", new HttpObjectAggregator(65536)); // Http消息组装
     pipeline.addLast("http-chunked", new ChunkedWriteHandler()); // WebSocket通信支持
-
-    //    pipeline.addLast("encoder", new MessageEncoder());
-    //    pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
-    //            ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
-    //            ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP, false,
-    //            ServerConfig.getInstance().getMessageType()));
-
+    // 消息编解码
     pipeline.addLast("encoder", new IMessageToWebSocketFrameEncoder());
     pipeline.addLast("decoder", new WebSocketFrameToIMessageDecoder());
 

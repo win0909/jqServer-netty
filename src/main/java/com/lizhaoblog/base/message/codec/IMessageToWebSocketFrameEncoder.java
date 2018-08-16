@@ -10,17 +10,13 @@
  */
 package com.lizhaoblog.base.message.codec;
 
-import com.lizhaoblog.base.exception.MessageCodecException;
 import com.lizhaoblog.base.message.IMessage;
 
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
-import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 
