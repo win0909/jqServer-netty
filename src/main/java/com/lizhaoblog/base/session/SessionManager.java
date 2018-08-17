@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -125,13 +126,21 @@ public class SessionManager {
 
   /**
    * 获取session的数组
-   * @return  session的数组
+   *
+   * @return session的数组
    */
   public Session[] getSessionArray() {
     Collection<Session> values = uidSessionMap.values();
     return values.toArray(new Session[values.size()]);
   }
 
+  public void putMapValue(Channel channel, String key, Object value) {
+    AttributeUtil.get(channel, SessionAttributeKey.SESSION).put(key, value);
+  }
+
+  public Object getMapValueByKey(Channel channel, String key) {
+    return AttributeUtil.get(channel, SessionAttributeKey.SESSION).getByKey(key);
+  }
 
   public void sendMessage(Channel channel, String msg) {
     sendMessage(getSessionByChannel(channel), msg);
@@ -141,9 +150,9 @@ public class SessionManager {
     session.getChannel().writeAndFlush(msg);
   }
 
-//  public void sendMessage(Session session, StringMessage stringMessage) {
-//    session.getChannel().writeAndFlush(stringMessage);
-//  }
+  //  public void sendMessage(Session session, StringMessage stringMessage) {
+  //    session.getChannel().writeAndFlush(stringMessage);
+  //  }
   public void sendMessage(Session session, IMessage iMessage) {
     session.getChannel().writeAndFlush(iMessage);
   }

@@ -15,6 +15,8 @@ import com.lizhaoblog.base.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
 import io.netty.channel.Channel;
 
 /**
@@ -46,13 +48,17 @@ public class Session {
    */
   private final long createTime;
 
+  private final HashMap<String, Object> hashMap;
+
   Session(Channel channel) {
     this.channel = channel;
     this.createTime = TimeUtil.getSysCurTimeMillis();
+    hashMap = new HashMap<>();
   }
 
   /**
    * 玩session里面写入user，一般是在登录之后调用
+   *
    * @param user 用户 信息
    */
   void registerUser(IUser user) {
@@ -83,4 +89,13 @@ public class Session {
   Channel getChannel() {
     return channel;
   }
+
+  void put(String key, Object value) {
+    hashMap.put(key, value);
+  }
+
+  Object getByKey(String key) {
+    return hashMap.getOrDefault(key, null);
+  }
+
 }
