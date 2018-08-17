@@ -42,7 +42,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Component
 public class BasicServerImpl implements IServer {
   private Channel acceptorChannel;
-  private static final Logger logger = LoggerFactory.getLogger(NetworkListener.class);
+  private static final Logger logger = LoggerFactory.getLogger(BasicServerImpl.class);
 
   @Override
   public void start() {

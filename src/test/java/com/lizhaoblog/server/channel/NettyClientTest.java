@@ -10,6 +10,7 @@
  */
 package com.lizhaoblog.server.channel;
 
+import com.lizhaoblog.base.util.SslUtil;
 import com.lizhaoblog.server.channel.tcp.bytec.TcpByteClientTest;
 import com.lizhaoblog.server.channel.tcp.str.TcpStringClientTest;
 import com.lizhaoblog.server.channel.websocket.WebSocketClientTest;
@@ -48,7 +49,8 @@ public class NettyClientTest {
     tcpByteClientTest.run();
   }
   @Test
-  public void testWebSocketByteClient() throws InterruptedException, URISyntaxException {
+  public void testWebSocketByteClient() throws InterruptedException, URISyntaxException,Exception {
+    SslUtil.ignoreSsl();
     ServerConfig.getInstance().setMessageType("BYTE");
     WebSocketClientTest webSocketClientTest = new WebSocketClientTest();
     webSocketClientTest.run();

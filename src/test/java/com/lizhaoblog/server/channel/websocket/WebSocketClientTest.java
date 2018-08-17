@@ -21,7 +21,11 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -32,9 +36,11 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import io.netty.handler.ssl.SslHandler;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -50,7 +56,7 @@ public class WebSocketClientTest {
 
   private static WebSocketClientHandlerTest handler;
 
-  private String uriStr = "ws//" + CommonValue.IP + ":" + CommonValue.PORT;
+  private String uriStr = "wss//" + CommonValue.IP + ":" + CommonValue.PORT;
 
   public void run() throws InterruptedException, URISyntaxException {
     Bootstrap bootstrap = new Bootstrap();
@@ -68,6 +74,18 @@ public class WebSocketClientTest {
       protected void initChannel(Channel ch) {
 
         ChannelPipeline pipeline = ch.pipeline();
+
+        SSLEngine sslEngine = null;
+        try {
+
+          //SSLEngine 此类允许使用ssl安全套接层协议进行安全通信
+          sslEngine = SSLContext.getDefault().createSSLEngine();
+          sslEngine.setUseClientMode(true);
+          pipeline.addLast("ssl", new SslHandler(sslEngine));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
         pipeline.addLast(new HttpClientCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast("encoder", new IMessageToWebSocketFrameEncoder());
@@ -96,24 +114,24 @@ public class WebSocketClientTest {
     //    WebSocketFrame frame = new PingWebSocketFrame(Unpooled.wrappedBuffer(new byte[] { 8, 1, 8, 1 }));
 //        WebSocketFrame frame = new TextWebSocketFrame("aaa");
 //        channelFuture.channel().writeAndFlush(frame);
-//    byte[] bytes = new byte[14];
-//    bytes[0] = 0;
-//    bytes[1] = 1;
-//    bytes[2] = 0;
-//    bytes[3] = 1;
-//    bytes[4] = 0;
-//    bytes[5] = 0;
-//    bytes[6] = 0;
-//    bytes[7] = 6;
-//    bytes[8] = 2;
-//    bytes[9] = 0;
-//    bytes[10] = 0;
-//    bytes[11] = 0;
-//    bytes[12] = 0;
-//    bytes[13] = 1;
+    byte[] bytes = new byte[14];
+    bytes[0] = 0;
+    bytes[1] = 1;
+    bytes[2] = 0;
+    bytes[3] = 1;
+    bytes[4] = 0;
+    bytes[5] = 0;
+    bytes[6] = 0;
+    bytes[7] = 6;
+    bytes[8] = 2;
+    bytes[9] = 0;
+    bytes[10] = 0;
+    bytes[11] = 0;
+    bytes[12] = 0;
+    bytes[13] = 1;
 ////    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(bytes));
-//    BinaryWebSocketFrame frame = new BinaryWebSocketFrame(Unpooled.copiedBuffer(bytes));
-    //    channelFuture.channel().writeAndFlush(frame);
+    BinaryWebSocketFrame frame = new BinaryWebSocketFrame(Unpooled.copiedBuffer(bytes));
+//        channelFuture.channel().writeAndFlush(frame);
         channelFuture.channel().writeAndFlush(byteMessage);
 
     logger.info("向Socket服务器发送数据:" + byteMessage);
