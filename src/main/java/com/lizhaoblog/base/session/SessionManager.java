@@ -151,7 +151,7 @@ public class SessionManager {
   }
 
   //  public void sendMessage(Session session, StringMessage stringMessage) {
-  //    session.getChannel().writeAndFlush(stringMessage);
+  //    session.getChannel().writeAndFlush(stringMessage); a
   //  }
   public void sendMessage(Session session, IMessage iMessage) {
     session.getChannel().writeAndFlush(iMessage);

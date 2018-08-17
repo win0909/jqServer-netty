@@ -57,7 +57,7 @@ public class Session {
   }
 
   /**
-   * 玩session里面写入user，一般是在登录之后调用
+   * 玩session里面写入user，一般是在登录之后调用a
    *
    * @param user 用户 信息
    */
