@@ -99,6 +99,11 @@ JgServer，使用java语言开发，基于Netty、Spring、Mybatis和Redis等框
   4. redis-config-dev.properties：redis数据库属性
   5. xml-cfg-config-dev.properties：xml-cfg配置属性
 
+#### 运行前提
+1. server-config-dev.properties：服务器属性 需要修改
+    - protocolType=TCP
+    - protocolType=WEBSOCKET
+2. db-config-dev.properties：数据库配置文件
 
 #### 安装教程
   1. 在编译器中直接运行com.lizhaoblog.Main
