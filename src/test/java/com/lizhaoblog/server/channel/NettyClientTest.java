@@ -49,9 +49,16 @@ public class NettyClientTest {
     TcpByteClientTest tcpByteClientTest = new TcpByteClientTest();
     tcpByteClientTest.run();
   }
-
   @Test
   public void testWebSocketByteClient() throws InterruptedException, URISyntaxException, Exception {
+    ServerConfig.getInstance().setMessageType("BYTE");
+    ServerConfig.getInstance().setSslOpen(false);
+    WebSocketClientTest webSocketClientTest = new WebSocketClientTest(CommonValue.IP, CommonValue.PORT,
+            ServerConfig.getInstance().getSslOpen());
+    webSocketClientTest.run();
+  }
+  @Test
+  public void testWebSocketSSLByteClient() throws InterruptedException, URISyntaxException, Exception {
     ServerConfig.getInstance().setMessageType("BYTE");
     ServerConfig.getInstance().setSslOpen(true);
     WebSocketClientTest webSocketClientTest = new WebSocketClientTest(CommonValue.IP, CommonValue.PORT,
