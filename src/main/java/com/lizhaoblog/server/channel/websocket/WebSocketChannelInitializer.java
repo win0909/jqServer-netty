@@ -28,7 +28,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
@@ -47,24 +46,28 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
   @Override
   protected void initChannel(SocketChannel ch) {
     ChannelPipeline pipeline = ch.pipeline();
-    try {
-      SSLContext sslContext = null;
-      // TODO 这里面的几项需要换成ServerConfig中的参数
-      sslContext = SslUtil.createSSLContext("JKS", "D:\\workdir\\doc\\jks\\wss.jks", "netty123");
-      // SSLEngine 此类允许使用ssl安全套接层协议进行安全通信
-      SSLEngine engine = sslContext.createSSLEngine();
-      // 服务器模式
-      engine.setUseClientMode(false);
-      //ssl双向认证
-      engine.setNeedClientAuth(false);
-      engine.setWantClientAuth(false);
-      // engine.setEnabledProtocols(new String[] { "SSLv3", "TLSv1" })
-      // TLSv1.2包括了SSLv3
-      engine.setEnabledProtocols(new String[] { "TLSv1.2" });
-      pipeline.addLast("ssl", new SslHandler(engine));
+    if (ServerConfig.getInstance().getSslOpen()) {
+      try {
+        SSLContext sslContext = null;
+        // sslContext = SslUtil.createSSLContext("JKS", "D:\\workdir\\doc\\jks\\wss.jks", "netty123");
+        sslContext = SslUtil
+                .createSSLContext(ServerConfig.getInstance().getSslType(), ServerConfig.getInstance().getSslPath(),
+                        ServerConfig.getInstance().getSslPassword());
+        // SSLEngine 此类允许使用ssl安全套接层协议进行安全通信
+        SSLEngine engine = sslContext.createSSLEngine();
+        // 服务器模式
+        engine.setUseClientMode(false);
+        //ssl双向认证
+        engine.setNeedClientAuth(false);
+        engine.setWantClientAuth(false);
+        // engine.setEnabledProtocols(new String[] { "SSLv3", "TLSv1" })
+        // TLSv1.2包括了SSLv3
+        engine.setEnabledProtocols(new String[] { "TLSv1.2" });
+        pipeline.addLast("ssl", new SslHandler(engine));
 
-    } catch (SSLException e) {
-      logger.debug("创建ssl出现错误", e);
+      } catch (SSLException e) {
+        logger.debug("添加ssl出现错误", e);
+      }
     }
 
     pipeline.addLast("http-codec", new HttpServerCodec()); // Http消息编码解码

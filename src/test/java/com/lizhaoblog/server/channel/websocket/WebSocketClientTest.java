@@ -55,8 +55,20 @@ public class WebSocketClientTest {
   private static EventLoopGroup group = new NioEventLoopGroup();
 
   private static WebSocketClientHandlerTest handler;
+  private String ip;
+  private int port;
+  private String uriStr;
 
-  private String uriStr = "wss//" + CommonValue.IP + ":" + CommonValue.PORT;
+  public WebSocketClientTest(String ip, int port, Boolean sslOpen) {
+    this.ip = ip;
+    this.port = port;
+    if (sslOpen) {
+      uriStr = "wss//" + ip + ":" + port;
+    } else {
+      uriStr = "ws//" + ip + ":" + port;
+    }
+
+  }
 
   public void run() throws InterruptedException, URISyntaxException {
     Bootstrap bootstrap = new Bootstrap();
@@ -91,11 +103,11 @@ public class WebSocketClientTest {
         pipeline.addLast("encoder", new IMessageToWebSocketFrameEncoder());
         pipeline.addLast("decoder", new WebSocketFrameToIMessageDecoder());
 
-//        pipeline.addLast("encoder", new MessageEncoder());
-//        pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
-//                ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
-//                ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP,
-//                false, ServerConfig.getInstance().getMessageType()));
+        //        pipeline.addLast("encoder", new MessageEncoder());
+        //        pipeline.addLast("decoder", new MessageDecoder(ConstantValue.MESSAGE_CODEC_MAX_FRAME_LENGTH,
+        //                ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_LENGTH, ConstantValue.MESSAGE_CODEC_LENGTH_FIELD_OFFSET,
+        //                ConstantValue.MESSAGE_CODEC_LENGTH_ADJUSTMENT, ConstantValue.MESSAGE_CODEC_INITIAL_BYTES_TO_STRIP,
+        //                false, ServerConfig.getInstance().getMessageType()));
 
         pipeline.addLast(handler);
       }
@@ -108,12 +120,12 @@ public class WebSocketClientTest {
 
     // 连接服务端
     //    ChannelFuture channelFuture = bootstrap.connect(CommonValue.IP, CommonValue.PORT).sync();
-    ChannelFuture channelFuture = bootstrap.connect(CommonValue.IP, CommonValue.PORT).sync();
+    ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
     handler.handshakeFuture().sync();
-//    channelFuture.channel().writeAndFlush(byteMessage);
+    //    channelFuture.channel().writeAndFlush(byteMessage);
     //    WebSocketFrame frame = new PingWebSocketFrame(Unpooled.wrappedBuffer(new byte[] { 8, 1, 8, 1 }));
-//        WebSocketFrame frame = new TextWebSocketFrame("aaa");
-//        channelFuture.channel().writeAndFlush(frame);
+    //        WebSocketFrame frame = new TextWebSocketFrame("aaa");
+    //        channelFuture.channel().writeAndFlush(frame);
     byte[] bytes = new byte[14];
     bytes[0] = 0;
     bytes[1] = 1;
@@ -129,10 +141,10 @@ public class WebSocketClientTest {
     bytes[11] = 0;
     bytes[12] = 0;
     bytes[13] = 1;
-////    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(bytes));
+    ////    channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(bytes));
     BinaryWebSocketFrame frame = new BinaryWebSocketFrame(Unpooled.copiedBuffer(bytes));
-//        channelFuture.channel().writeAndFlush(frame);
-        channelFuture.channel().writeAndFlush(byteMessage);
+    //        channelFuture.channel().writeAndFlush(frame);
+    channelFuture.channel().writeAndFlush(byteMessage);
 
     logger.info("向Socket服务器发送数据:" + byteMessage);
     channelFuture.channel().closeFuture().sync();

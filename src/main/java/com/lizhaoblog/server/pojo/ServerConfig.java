@@ -41,6 +41,15 @@ public class ServerConfig {
   @Value("#{cfgProps['messageType']}")
   private String messageType;
 
+  @Value("#{cfgProps['sslOpen']}")
+  private Boolean sslOpen;
+  @Value("#{cfgProps['sslType']}")
+  private String sslType;
+  @Value("#{cfgProps['sslPath']}")
+  private String sslPath;
+  @Value("#{cfgProps['sslPassword']}")
+  private String sslPassword;
+
   // xml cfg
   @Value("#{cfgProps['xml.cfg.cfgPackageName']}")
   private String cfgPackageName;
@@ -108,8 +117,10 @@ public class ServerConfig {
     logger.info("port          : " + port);
     logger.info("channelType   : " + channelType);
     logger.info("messageType   : " + messageType);
+    logger.info("sslOpen       : " + sslOpen);
     logger.info("**************Server INFO******************");
   }
+
   public void printXmlCfgInfo() {
     logger.info("**************Xml Cfg INFO******************");
     logger.info("cfgPackageName     : " + cfgPackageName);
@@ -121,6 +132,7 @@ public class ServerConfig {
     logger.info("xmlFileDir         : " + xmlFileDir);
     logger.info("**************Xml Cfg INFO******************");
   }
+
   // Redis config
   public void printRedisInfo() {
     logger.info("**************Redis INFO******************");
@@ -169,6 +181,38 @@ public class ServerConfig {
 
   public void setMessageType(String messageType) {
     this.messageType = messageType;
+  }
+
+  public Boolean getSslOpen() {
+    return sslOpen;
+  }
+
+  public void setSslOpen(Boolean sslOpen) {
+    this.sslOpen = sslOpen;
+  }
+
+  public String getSslType() {
+    return sslType;
+  }
+
+  public void setSslType(String sslType) {
+    this.sslType = sslType;
+  }
+
+  public String getSslPath() {
+    return sslPath;
+  }
+
+  public void setSslPath(String sslPath) {
+    this.sslPath = sslPath;
+  }
+
+  public String getSslPassword() {
+    return sslPassword;
+  }
+
+  public void setSslPassword(String sslPassword) {
+    this.sslPassword = sslPassword;
   }
 
   public ApplicationContext getApplicationContext() {
