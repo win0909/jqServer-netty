@@ -17,7 +17,6 @@ package org.apache.ibatis.builder.annotation;
 
 import com.lizhaoblog.base.mybatis.CrudProvider;
 import com.lizhaoblog.base.mybatis.CrudSqlSource;
-
 import org.apache.ibatis.annotations.Arg;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.CacheNamespaceRef;
@@ -67,7 +66,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
